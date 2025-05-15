@@ -1,0 +1,28 @@
+.image-card {
+    margin: 10px 5px;
+    width: 100%;
+    text-align: center;
+}
+
+.image-card-image {
+    width: 90%;
+    height: auto;
+    padding-top: 15px;
+    transition: all 1s !important;
+}
+
+.image-card-image:hover {
+    width: 95%;
+}
+
+.image-card-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.image-card-subtitle {
+    font-size: 13px;
+    font-style: italic;
+    margin: 0;
+}

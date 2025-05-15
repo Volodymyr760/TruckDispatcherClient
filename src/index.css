@@ -1,0 +1,259 @@
+:root {
+    --blue: #1976D2;
+    --darkBlue: #07039E;
+    --darkGrey: #4b605c;
+    --green: #08914B;
+    --lightGrey: #5f7c78;
+    --orange: #D84A05;
+    --red: #d32f2f;
+    --lightgreywhite: #f2f5f4;
+    --lightyellow: #FFEA99;
+    --yellow: #FFB400;
+}
+
+body {
+    margin: 0;
+    font-family: "Mulish";
+    font-weight: 400;
+    line-height: 1.4rem !important;
+    letter-spacing: 0;
+    background-color: white;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+label,
+ul{
+    font-family: "Mulish", sans-serif;
+    color: var(--darkGrey);
+}
+
+code {
+    font-family: "Courier New", monospace;
+}
+
+.loading-opacity {
+    opacity: 0.5;
+    transition: all 1s !important;
+}
+
+.main-menu-link {
+    font-family: "Mulish";
+    color: var(--darkGrey);
+    text-decoration: none;
+    transition: 0.3s;
+    white-space: nowrap;
+    letter-spacing: 0.3px;
+    text-transform: none;
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.page-chapter-container {
+    padding: 60px 0 30px 0;
+}
+
+.price-card {
+    width: 100%;
+    margin: 10px 5px;
+    height: 90%;
+    transition: all 1s !important;
+}
+
+.price-card:hover {
+    height: calc(90% + 10px);
+}
+
+.table-header {
+    display: flex;
+    direction: row;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.table-row {
+    transition: "background-color" 1s !important;
+}
+
+.table-row:hover {
+    background-color: #f1f5f4 !important;
+}
+
+.table-cell {
+    font-size: 0.9rem;
+}
+
+.table-actions {
+    display: flex;
+    direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.a-small-blue {
+    font-family: "Mulish";
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 15px;
+    color: #1976d2;
+    cursor: pointer;
+}
+
+.preview-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.preview-image {
+    width: 210px;
+    height: auto;
+    margin-bottom: 25px;
+}
+
+.uploader-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    margin: 20px auto;
+    max-width: 265px;
+    min-height: 110px;
+
+    border: 1px dashed var(--lightgreywhite);
+    box-shadow: 0px 0px 10px 2px rgba(0, 35, 131, 0.15);
+    border-radius: 5px;
+}
+
+.layout-container {
+    min-height: calc(100vh - 136px);
+    margin-top: 16px;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    background-color: white;
+}
+
+.layout-container-searchpage {
+    min-height: calc(100vh - 360px);
+    margin-top: 16px;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    background-color: white;
+}
+
+.layout-container-grey {
+    margin: 30px 0 30px 0 !important;
+    background-color: var(--lightgreywhite);
+    padding: 60px 30px 60px 30px;
+}
+
+.logo {
+    margin: 10px 0;
+}
+
+/*Page titles pt1, pt2, pt3*/
+.pt1 {
+    font-family: "Mulish";
+    color: var(--darkGrey);
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: 0;
+}
+
+.pt2 {
+    font-family: "Mulish";
+    color: var(--darkGrey);
+    font-size: 24px;
+    font-weight: 500;
+    letter-spacing: 0;
+}
+
+.pt3 {
+    font-family: "Mulish";
+    color: var(--darkGrey);
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: 0;
+    text-align: center;
+}
+
+.text-20 {
+    font-family: "Mulish";
+    font-size: 20px;
+    color: var(--darkGrey);
+}
+
+
+.text-16 {
+    font-family: "Mulish";
+    font-size: 16px;
+    color: var(--darkGrey);
+}
+
+.text-14 {
+    font-family: "Mulish";
+    font-size: 14px;
+    color: var(--darkGrey);
+}
+
+.text-12 {
+    font-family: "Mulish";
+    font-size: 12px;
+    color: var(--darkGrey);
+}
+
+.text-10 {
+    font-family: "Mulish";
+    font-size: 10px;
+    color: var(--darkGrey);
+}
+
+.text-8 {
+    font-family: "Mulish";
+    font-size: 8px;
+    color: var(--darkGrey);
+}
+
+.error-wrapper {
+    color: var(--red);
+    font-weight: 400;
+    font-size: 0.75rem;
+    letter-spacing: 0.03333em;
+    text-align: left;
+    margin-top: -3px;
+    margin-right: 14px;
+    margin-bottom: 0;
+    margin-left: 14px;
+}
+
+.success-wrapper {
+    color: "Teal";
+    font-weight: 400;
+    font-size: 0.75rem;
+    letter-spacing: 0.03333em;
+    text-align: left;
+    margin-top: -3px;
+    margin-right: 14px;
+    margin-bottom: 0;
+    margin-left: 14px;
+}
+
+.footer {
+    margin-top: 50px !important;
+    padding: 60px 0 30px 0;
+    border-bottom: 1px solid var(--lightGrey);
+    background: var(--lightgreywhite);
+    color: var(--darkGrey);
+}
+

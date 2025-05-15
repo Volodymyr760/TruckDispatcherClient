@@ -1,0 +1,6 @@
+#equipment-label, #load-status-label, #truck-label {
+    font-family: "Mulish";
+    font-size: 16px;
+    line-height: 1.4;
+    color: var(--darkGrey);
+}
