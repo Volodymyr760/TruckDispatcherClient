@@ -4,16 +4,16 @@ import MoreVertIcon from '@mui/icons-material/MoreVert'
 import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined'
 import ErrorMessage from '../../components/Messages/ErrorMessage'
 import MuiButton from '../../components/Button/MuiButton'
-import '../../index.css'
 import SuccessMessage from "../../components/Messages/SuccessMessage"
+import '../../index.css'
 
 export default function TestUI(): JSX.Element {
 
     return (
         <div style={{ backgroundColor: 'white', margin: "15px", padding: "15px" }}>
             <Helmet>
-                <title>TruckDispatcher.com - UI Tests</title>
-                <meta name="description" content="Forms for remote work and control with customers, business units and personnel, create your form with questions, add images, answer options and your comments - TruckDispatcher.com" />
+                <title>TruckDispatcher.top - UI Tests</title>
+                <meta name="description" content="Forms for remote work and control with customers, business units and personnel, create your form with questions, add images, answer options and your comments - TruckDispatcher.top" />
             </Helmet>
             <div className='pt1' style={{ textAlign: 'center' }}>Tests of UI Components</div>
             <div style={{ margin: "15px" }}>

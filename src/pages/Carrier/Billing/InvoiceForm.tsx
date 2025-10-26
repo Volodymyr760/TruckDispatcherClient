@@ -31,7 +31,7 @@ export default function InvoiceForm({ pricepackage, onClose }: InvoiceFormProps)
     const [loadingState, setLoadingState] = useState<boolean>(false)
     const [errorState, setErrorState] = useState<null | string>(null)
     const [invoiceTo, setInvoiceTo] = useState<string>(auth.user.firstName + " " + auth.user.lastName)
-    const [duration, setDuration] = useState("1")
+    const [duration, setDuration] = useState("3")
     const [note, setNote] = useState<string | null>(null)
 
     const onGetInvoice = async () => {
@@ -83,6 +83,7 @@ export default function InvoiceForm({ pricepackage, onClose }: InvoiceFormProps)
                         <TextField
                             label="Invoice To"
                             fullWidth
+                            inputRef={input => input && input.focus()}
                             value={invoiceTo}
                             onChange={(e) => setInvoiceTo(e.target.value)}
                             error={invoiceTo.length === 0}
@@ -99,10 +100,8 @@ export default function InvoiceForm({ pricepackage, onClose }: InvoiceFormProps)
                                 label="Duration"
                                 onChange={(e) => setDuration(e.target.value)}
                             >
-                                <MenuItem value={1}>1 month</MenuItem>
-                                <MenuItem value={3}>3 months</MenuItem>
-                                <MenuItem value={6}>6 months</MenuItem>
-                                <MenuItem value={9}>9 months</MenuItem>
+                                <MenuItem value={3}>3 month</MenuItem>
+                                <MenuItem value={6}>6 month</MenuItem>
                                 <MenuItem value={12}>1 year</MenuItem>
                             </Select>
                             <FormHelperText>Price plan activates from payment date until the duration ends</FormHelperText>

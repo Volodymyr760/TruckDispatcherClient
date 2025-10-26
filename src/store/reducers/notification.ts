@@ -1,15 +1,12 @@
-import { IAuth } from "../../types/auth"
 import { OrderType } from "../../types/common/orderType"
 import { INotification, NotificationActionTypes, NotificationAction, NotificationState } from "../../types/notification"
-
-const auth: IAuth = JSON.parse(localStorage.getItem("auth"))
 
 const initialState: NotificationState = {
     notificationSearchParams: {
         pageSize: 25,
         currentPage: 1,
         searchCriteria: "",
-        userId: auth ? auth.user.id : "",
+        userId: localStorage.getItem("id") || "",
         sortField: "CreatedAt",
         order: OrderType.Ascending,
         includeNavProperties: false,

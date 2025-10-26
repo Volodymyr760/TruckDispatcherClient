@@ -31,8 +31,8 @@ export default function BillingPage() {
     return (
         <Container maxWidth="lg" className='layout-container' >
             <Helmet>
-                <title>Truskdispatcher.com - Billing</title>
-                <meta name="description" content="Advanced truck loads search engine for owner operators and dispatchers - Truskdispatcher.com" />
+                <title>Truckdispatcher.top - Billing</title>
+                <meta name="description" content="Advanced truck loads search engine for owner operators and dispatchers - Truckdispatcher.top" />
             </Helmet>
             <Box sx={{ width: '100%' }}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>

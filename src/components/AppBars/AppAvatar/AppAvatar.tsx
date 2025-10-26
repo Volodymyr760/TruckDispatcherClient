@@ -9,7 +9,6 @@ import PasswordIcon from '@mui/icons-material/Password'
 import LogoutIcon from '@mui/icons-material/Logout'
 import ChangeEmailPage from '../../../pages/Account/ChangeEmail/ChangeEmailPage'
 import ChangePasswordPage from '../../../pages/Account/ChangePassword/ChangePasswordPage'
-import ResetPasswordPage from '../../../pages/Account/ResetPassword/ResetPasswordPage'
 
 export default function AppAvatar() {
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
@@ -20,7 +19,6 @@ export default function AppAvatar() {
     const settings: { route: IRoute, icon: React.ReactNode }[] = [
         { route: { path: RouteNames.CHANGE_EMAIL, title: "Change email", component: <ChangeEmailPage /> }, icon: <MailOutlineIcon sx={{ color: "var(--darkGrey)" }} /> },
         { route: { path: RouteNames.CHANGE_PASSWORD, title: "Change password", component: <ChangePasswordPage /> }, icon: <PasswordIcon sx={{ color: "var(--darkGrey)" }} /> },
-        { route: { path: RouteNames.RESET_PASSWORD, title: "Reset password", component: <ResetPasswordPage /> }, icon: <PasswordIcon sx={{ color: "var(--darkGrey)" }} /> },
     ];
 
     const handleLogout = () => {
@@ -71,7 +69,6 @@ export default function AppAvatar() {
                 <hr style={{ width: "90%" }} />
                 <MenuItem component={Link} to={RouteNames.HOME} onClick={handleLogout}>
                     <Grid container direction="row" justifyContent="space-between" alignItems="center" gap="10px">
-                        {/* <Typography sx={{ textAlign: "left", fontSize: "0.95rem" }}>Logout</Typography> */}
                         <span className='text-16'>Logout</span>
                         <LogoutIcon sx={{ color: "var(--red)" }} />
                     </Grid>

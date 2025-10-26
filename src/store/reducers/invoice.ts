@@ -1,15 +1,12 @@
-import { IAuth } from "../../types/auth"
 import { OrderType } from "../../types/common/orderType"
 import { InvoiceAction, InvoiceActionTypes, InvoiceState, IInvoice } from "../../types/invoice"
-
-const auth: IAuth = JSON.parse(localStorage.getItem("auth"))
 
 const initialState: InvoiceState = {
     invoiceSearchParams: {
         pageSize: 10,
         currentPage: 1,
         searchCriteria: "",
-        userId: auth ? auth.user.id : "",
+        userId: localStorage.getItem("id") || "",
         sortField: "Invoice No",
         order: OrderType.Descending,
         includeNavProperties: false,

@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import { useActions } from '../../../hooks/useActions'
+import { deleteTruckAxios } from '../../../api/truck'
 import { TruckCardProps } from './types'
 import { Equipment } from '../../../types/common/equipment'
 import { ITruck, TruckStatus } from '../../../types/truck'
-import { ISnackBarMessageState } from '../../../types/common/snackBarMessageState'
-import { Alert, Avatar, Box, Divider, Grid, IconButton, Menu, MenuItem, Snackbar, Tooltip } from '@mui/material'
+import { Avatar, Box, Divider, Grid, IconButton, Menu, MenuItem, Tooltip } from '@mui/material'
+import CircularProgress from '@mui/material/CircularProgress'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import InventoryIcon from '@mui/icons-material/Inventory'
@@ -14,25 +15,23 @@ import TruckLoadsList from './TruckLoadsList'
 
 export default function TruckCard({ truck, onEdit }: TruckCardProps) {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-    const [snackBarState, setSnackBarState] = useState<null | ISnackBarMessageState>(null)
     const [confirmDialogOpen, setConfirmDialogOpen] = useState<boolean>(false)
+    const [loadingState, setLoadingState] = useState<boolean>(false)
     const [currentTruck, setCurrentTruck] = useState<ITruck>(null)
-    const { removeTruck } = useActions()
+    const { removeTruck, setTruckError } = useActions()
 
     const handleOpen = (event: React.MouseEvent<HTMLElement>) => setAnchorEl(event.currentTarget)
     const handleClose = () => setAnchorEl(null)
 
-    const сloseSnackbar = (event: React.SyntheticEvent | Event, reason?: string) => {
-        if (reason === 'clickaway') return
-        setSnackBarState(null)
-    };
-
     const onDeleteTruck = async () => {
         try {
-            setSnackBarState(null)
+            setLoadingState(true)
+            await deleteTruckAxios(truck.id)
             removeTruck(truck.id)
         } catch (error) {
-            setSnackBarState({ message: error.message || "Unable to delete the truck.", severity: "error" })
+            setTruckError(error.message || "Error while removing the truck.")
+        } finally {
+            setLoadingState(false)
         }
     }
 
@@ -79,6 +78,7 @@ export default function TruckCard({ truck, onEdit }: TruckCardProps) {
             {/* Menu */}
             <Box sx={{ flexBasis: { xs: "24px", sm: "140px" }, flexShrink: 0 }}>
                 <Box sx={{ flexGrow: 0, display: { xs: 'none', md: 'flex' }, alignItems: 'right', justifyContent: "end" }}>
+                    {loadingState && <CircularProgress size="1rem" sx={{ m: '4px 10px 0 0' }} />}
                     <Tooltip title="Loads list" placement="top">
                         <InventoryIcon sx={{ cursor: 'pointer', margin: '0 5px', fill: 'var(--lightGrey)', '&:hover': { fill: "var(--green)" } }} 
                             onClick={() => setCurrentTruck(truck)} />
@@ -132,13 +132,6 @@ export default function TruckCard({ truck, onEdit }: TruckCardProps) {
                     onDelete={onDeleteTruck}
                 />
             }
-            <Snackbar
-                open={snackBarState !== null}
-                autoHideDuration={4000}
-                onClose={сloseSnackbar}
-            >
-                <Alert severity={snackBarState?.severity}>{snackBarState?.message}</Alert>
-            </Snackbar>
             {currentTruck && <TruckLoadsList truck={truck} onClose={() => setCurrentTruck(null)} />}
         </div>
     )

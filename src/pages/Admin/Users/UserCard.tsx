@@ -33,7 +33,7 @@ export default function UserCard({ user, onEditAccount, onManageUser }: UserCard
     const onSendWarning = async (text: string) => {
         const notification = {
             senderAvatarUrl: null,
-            senderFullName: "DoYourForm",
+            senderFullName: "TruckDispatcher",
             message: text,
             isRead: false,
             callBackUrl: "",

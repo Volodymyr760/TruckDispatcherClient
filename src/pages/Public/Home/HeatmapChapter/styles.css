@@ -1,0 +1,7 @@
+#mapsection {
+    width: 100%;
+    height: auto;
+    fill: #ccc;
+    stroke: #333;
+    stroke-width: 2;
+}

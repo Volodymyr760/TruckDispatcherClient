@@ -17,13 +17,15 @@ import DemoLayout from './Layouts/DemoLayout'
 import DriverPage from '../pages/Carrier/Driver/DriverPage'
 import EmailConfirmPage from '../pages/Account/EmailConfirm/EmailConfirmPage'
 import ErrorPage from '../pages/Public/Error/ErrorPage'
+import FeaturesPage from '../pages/Public/Features/FeaturesPage'
 import ForgotPasswordPage from '../pages/Account/ForgotPassword/ForgotPasswordPage'
 import HeatmapPage from '../pages/HeatMap/HeatmapPage'
-import HelpPage from '../pages/Public/Help/Help'
+import HelpPage from '../pages/Public/Help/HelpPage'
 import HomePage from '../pages/Public/Home/HomePage'
 import InvoicePreview from '../pages/Carrier/Billing/InvoicePreview'
 import LoadPage from '../pages/Carrier/Load/LoadPage'
 import LoginPage from '../pages/Account/Login/LoginPage'
+import PricePage from '../pages/Public/Prices/PricePage'
 import PrivacyPolicyPage from '../pages/Public/PrivacyPolicy/PrivacyPolicyPage'
 import ProfilePage from '../pages/Account/Profile/ProfilePage'
 import PublicLayout from './Layouts/PublicLayout'
@@ -41,14 +43,17 @@ export default function AppRouter() {
 
     const publicPages = [
         { route: RouteNames.EMAIL_CONFIRM, element: <PublicLayout><EmailConfirmPage /></PublicLayout> },
+        { route: RouteNames.FEATURES, element: <PublicLayout><FeaturesPage /></PublicLayout> },
         { route: RouteNames.FORGOT_PASSWORD, element: <PublicLayout><ForgotPasswordPage /></PublicLayout> },
         { route: RouteNames.HOME, element: <PublicLayout ><HomePage /></PublicLayout> },
         { route: RouteNames.HELP, element: <PublicLayout ><HelpPage /></PublicLayout> },
         { route: RouteNames.TEST_UI, element: <PublicLayout ><TestUI /></PublicLayout> },
         { route: RouteNames.LOGIN, element: <PublicLayout ><LoginPage /></PublicLayout> },
         { route: RouteNames.PRIVACY_POLICY, element: <PublicLayout ><PrivacyPolicyPage /></PublicLayout> },
+        { route: RouteNames.PRICES, element: <PublicLayout ><PricePage /></PublicLayout> },
         { route: RouteNames.REGISTER, element: <PublicLayout ><RegisterPage /></PublicLayout> },
         { route: RouteNames.REGISTER_COMPLETE, element: <PublicLayout ><RegisterCompletePage /></PublicLayout> },
+        { route: RouteNames.RESET_PASSWORD, element: <PublicLayout><ResetPasswordPage /></PublicLayout> },
         { route: RouteNames.TERMS_CONDITIONS, element: <PublicLayout ><TermsConditionsPage /></PublicLayout> },
         { route: "*", element: <PublicLayout ><ErrorPage /></PublicLayout> },
     ]
@@ -71,7 +76,6 @@ export default function AppRouter() {
         { route: RouteNames.INVOICE, element: <DemoLayout title='Billing'><InvoicePreview /></DemoLayout> },
         { route: RouteNames.LOAD, element: <DemoLayout title='Loads'><LoadPage /></DemoLayout> },
         { route: RouteNames.PROFILE, element: <DemoLayout title='Profile'><ProfilePage /></DemoLayout> },
-        { route: RouteNames.RESET_PASSWORD, element: <DemoLayout title='Reset Password'><ResetPasswordPage /></DemoLayout> },
         { route: RouteNames.SEARCH, element: <DemoLayout title='Search'><SearchPage role={Role.Carrier} /></DemoLayout> },
         { route: RouteNames.TRUCK, element: <DemoLayout title='Trucks'><TruckPage /></DemoLayout> }
     ]
@@ -84,7 +88,6 @@ export default function AppRouter() {
         { route: RouteNames.INVOICE, element: <DemoLayout title='Billing'><InvoicePreview /></DemoLayout> },
         { route: RouteNames.BROKER_LOADS, element: <DemoLayout title='Loads'><BrokerLoadPage /></DemoLayout> },
         { route: RouteNames.PROFILE, element: <DemoLayout title='Profile'><ProfilePage /></DemoLayout> },
-        { route: RouteNames.RESET_PASSWORD, element: <DemoLayout title='Reset Password'><ResetPasswordPage /></DemoLayout> },
         { route: RouteNames.SEARCH, element: <DemoLayout title='Search'><SearchPage role={Role.Broker} /></DemoLayout> },
     ]
 

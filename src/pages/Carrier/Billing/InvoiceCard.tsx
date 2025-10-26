@@ -72,7 +72,11 @@ export default function InvoiceCard({ invoice }: InvoiceCardProps) {
                     Invoice No: {invoice.invoiceNo} Total: ${invoice.total.toFixed(2)}
                 </span>
                 <span className='text-12' style={{ fontWeight: invoice.isRead ? 600 : 800 }}>
-                    Created: {(new Date(invoice.createdAt.toString() + "Z")).toLocaleDateString("en-US", {year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit"})}
+                    Created: {
+                        invoice.createdAt.toString().includes('Z') ?
+                        (new Date(invoice.createdAt.toString())).toLocaleDateString("en-US", {year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit"}) :
+                        (new Date(invoice.createdAt.toString() + "Z")).toLocaleDateString("en-US", {year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit"})
+                    }
                 </span>
                 <Grid item sx={{ display: 'flex' }}>
                     <Grid container direction="row" justifyContent="flex-start" alignItems="center" gap='15px'>

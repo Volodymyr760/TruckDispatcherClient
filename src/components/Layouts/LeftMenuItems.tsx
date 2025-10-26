@@ -23,13 +23,15 @@ import SearchIcon from '@mui/icons-material/Search'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import TravelExploreIcon from '@mui/icons-material/TravelExplore'
 
-const style = { fontFamily: "Mulish", fontWeight: 800, fontSize: '16px', lineHeight: '1.1rem', color: 'var(--lightGrey)'}
-
 export default function LeftMenuItems() {
     const [adminOpen, setAdminOpen] = useState<boolean>(true)
     const { invoiceSearchParams } = useTypedSelector(state => state.invoice)
     const { auth } = useTypedSelector(state => state.auth)
     
+    const style = { fontFamily: "Mulish", fontWeight: 800, fontSize: '16px', lineHeight: '1.1rem', 
+        // color: 'var(--lightGrey)'
+    }
+
     return (
         <List
             sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}

@@ -12,9 +12,9 @@ export const logout = (email: string, token: string) => {
         try {
             dispatch({ type: AuthActionTypes.SET_AUTH_LOADING, payload: true })
             dispatch({ type: AuthActionTypes.SET_AUTH_ERROR, payload: null })
-            localStorage.removeItem("auth");
+            localStorage.removeItem("id");
             dispatch({ type: AuthActionTypes.LOGOUT, payload: null })
-            await logoutAxios(email, token);
+            await logoutAxios(email);
         } catch (error) {
             dispatch({ type: AuthActionTypes.SET_AUTH_ERROR, payload: error.message || 'Unknown error.' })
         } finally {

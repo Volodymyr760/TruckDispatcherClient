@@ -52,11 +52,11 @@ export default function UserForm({ user, onClose }: AccountFormProps) {
         companyName: user.companyName,
         firstName: user.firstName,
         lastName: user.lastName,
-        avatar: user.avatar,
+        avatar: user.avatar || '',
         accountStatus: user.accountStatus,
         email: user.email,
         emailConfirmed: user.emailConfirmed,
-        phoneNumber: user.phoneNumber,
+        phoneNumber: user.phoneNumber || '',
         startPayedPeriodDate: user.startPayedPeriodDate,
         finishPayedPeriodDate: user.finishPayedPeriodDate,
         lastLoginDate: user.lastLoginDate,
@@ -104,11 +104,13 @@ export default function UserForm({ user, onClose }: AccountFormProps) {
             />
             <form onSubmit={handleSubmit(onSubmit)} style={{ maxWidth: '360px' }}>
                 <Grid container direction={'column'} justifyContent="center" spacing={2} sx={{ padding: '50px 20px' }}>
+                    {/* First Name */}
                     <Grid item>
                         <Controller name="firstName" control={control}
                             render={({ field }) =>
-                                <TextField  {...field} label="First Name" type="text" margin="normal" fullWidth
-                                    sx={{"& .MuiOutlinedInput-root": muiTextFieldStyle, "& .MuiInputLabel-outlined": muiTextFieldStyle}}
+                                <TextField  {...field} label="First Name" type="text" fullWidth
+                                    inputRef={input => input && input.focus()}
+                                    sx={{marginTop: 3, "& .MuiOutlinedInput-root": muiTextFieldStyle, "& .MuiInputLabel-outlined": muiTextFieldStyle}}
                                     InputProps={{
                                         endAdornment: (
                                             <InputAdornment position="end">
@@ -117,13 +119,15 @@ export default function UserForm({ user, onClose }: AccountFormProps) {
                                                 </IconButton>
                                             </InputAdornment>),
                                     }}
-                                    error={Boolean(errors.firstName)} helperText={errors.firstName?.message} />}
+                                    error={Boolean(errors.firstName)} helperText={errors.firstName?.message} 
+                                />}
                         />
                     </Grid>
+                    {/* Last Name */}
                     <Grid item>
                         <Controller name="lastName" control={control}
                             render={({ field }) =>
-                                <TextField  {...field} label="Last Name" type="text" margin="normal" fullWidth
+                                <TextField  {...field} label="Last Name" type="text" fullWidth
                                     sx={{"& .MuiOutlinedInput-root": muiTextFieldStyle, "& .MuiInputLabel-outlined": muiTextFieldStyle}}
                                     InputProps={{
                                         endAdornment: (
@@ -136,11 +140,12 @@ export default function UserForm({ user, onClose }: AccountFormProps) {
                                     error={Boolean(errors.lastName)} helperText={errors.lastName?.message} />}
                         />
                     </Grid>
+                    {/* Phone */}
                     <Grid item>
                         <Controller name="phoneNumber" control={control}
                             render={({ field }) =>
                                 <>
-                                    <TextField {...field} label="Phone" type="text" margin="normal" fullWidth
+                                    <TextField {...field} label="Phone" type="text" fullWidth
                                         sx={{"& .MuiOutlinedInput-root": muiTextFieldStyle, "& .MuiInputLabel-outlined": muiTextFieldStyle}}
                                         InputProps={{
                                             endAdornment: (
@@ -161,6 +166,7 @@ export default function UserForm({ user, onClose }: AccountFormProps) {
                             }
                         />
                     </Grid>
+                    {/* Start Payed Date */}
                     <Grid item sx={{margin: "15px 0"}}>
                         <Controller name="startPayedPeriodDate" control={control}
                             render={({ field }) =>
@@ -174,6 +180,7 @@ export default function UserForm({ user, onClose }: AccountFormProps) {
                                 </LocalizationProvider>
                             } />
                     </Grid>
+                    {/* Finish Payed Date */}
                     <Grid item>
                         <Controller name="finishPayedPeriodDate" control={control}
                             render={({ field }) =>
@@ -187,6 +194,7 @@ export default function UserForm({ user, onClose }: AccountFormProps) {
                                 </LocalizationProvider>
                             } />
                     </Grid>
+                    {/* Account Status */}
                     <Grid item sx={{margin: "15px 0"}}>
                         <FormControl sx={{ width: 300 }}>
                             <InputLabel id="account-status-select-label">Account Status</InputLabel>
@@ -212,6 +220,7 @@ export default function UserForm({ user, onClose }: AccountFormProps) {
                     </Grid>
                     {errorState && <ErrorMessage appearance="small" >{errorState}</ErrorMessage>}
                 </Grid>
+                {/* Buttons */}
                 <Grid container direction="row" justifyContent="space-around" alignItems="center" mb={2}>
                     <MuiButton variant='contained' onClickHandler={onCancelHandler}>
                         <span className="text-14" style={{color: 'var(--lightgreywhite)'}}>Cancel</span>

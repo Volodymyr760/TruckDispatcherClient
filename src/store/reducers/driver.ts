@@ -1,15 +1,12 @@
-import { IAuth } from "../../types/auth"
 import { OrderType } from "../../types/common/orderType"
 import { DriverAction, DriverActionTypes, DriverState, IDriver } from "../../types/driver"
-
-const auth: IAuth = JSON.parse(localStorage.getItem("auth"))
 
 const initialState: DriverState = {
     driverSearchParams: {
         pageSize: 10,
         currentPage: 1,
         searchCriteria: "",
-        userId: auth ? auth.user.id : "",
+        userId: localStorage.getItem("id") || "",
         sortField: "First Name",
         order: OrderType.Ascending,
         includeNavProperties: true,

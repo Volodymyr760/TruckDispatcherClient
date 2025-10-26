@@ -7,7 +7,7 @@ const initialState: PricepackageState = {
         currentPage: 1,
         searchCriteria: "",
         userId: "",
-        sortField: "Price",
+        sortField: "Period",
         order: OrderType.Ascending,
         includeNavProperties: true,
         itemList: [],

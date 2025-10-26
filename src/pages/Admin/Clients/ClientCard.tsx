@@ -1,31 +1,48 @@
 import { useState } from 'react'
 import { useActions } from '../../../hooks/useActions'
+import { AppRoles } from '../../../types/common/appRoles'
 import { ClientCardProps } from './types'
-import { deleteClientAxios } from '../../../api/client'
+import { ClientStatus } from '../../../types/client'
+import { deleteClientAxios, getSendInvitationAxios } from '../../../api/client'
 import { Avatar, Box, Divider, Grid, IconButton, Menu, MenuItem, Tooltip } from '@mui/material'
 import CircularProgress from '@mui/material/CircularProgress'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
-import MailOutlineIcon from '@mui/icons-material/MailOutline'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
+import ReportGmailerrorredOutlinedIcon from '@mui/icons-material/ReportGmailerrorredOutlined'
 import AppDeleteConfirmDialog from '../../../components/AppDeleteConfirmDialog/AppDeleteConfirmDialog'
-import { ClientStatus } from '../../../types/client'
-import { AppRoles } from '../../../types/common/appRoles'
 
 export default function ClientCard({ client, onEdit }: ClientCardProps): JSX.Element {
-    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-    const { removeClient } = useActions()
     const [loadingState, setLoadingState] = useState<boolean>(false)
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+    const { removeClient, inviteClientCarrier, setClientError } = useActions()
     const [confirmDialogOpen, setConfirmDialogOpen] = useState<boolean>(false)
 
     const handleOpen = (event: React.MouseEvent<HTMLElement>) => setAnchorEl(event.currentTarget)
     const handleClose = () => setAnchorEl(null)
+    
+    const onInvite = async () => {
+        try {
+            setLoadingState(true)
+            const invitedClient = await getSendInvitationAxios(client.id)
+            inviteClientCarrier(invitedClient)
+        } catch (error) {
+            setClientError(error.message || "Error while inviting the client.")
+        } finally {
+            setLoadingState(false)
+        }
+    }
 
     const onDeleteClient = async () => {
-        setLoadingState(true)
-        await deleteClientAxios(client.id)
-        removeClient(client.id)
-        setLoadingState(false)
+        try {
+            setLoadingState(true)
+            await deleteClientAxios(client.id)
+            removeClient(client.id)
+        } catch (error) {
+            setClientError(error.message || "Error while removing the client.")
+        } finally {
+            setLoadingState(false)
+        }
     }
 
     return (
@@ -34,10 +51,12 @@ export default function ClientCard({ client, onEdit }: ClientCardProps): JSX.Ele
                 <Avatar sx={{ bgcolor: "var(--blue)", color: "white" }}>{client.name.charAt(0)}</Avatar>
             </div>
             <Grid container direction="column" justifyContent="flex-start" alignItems="flex-start" sx={{ flexGrow: 1, margin: "0 10px" }}>
-                <span className='text-14' style={{fontWeight: 800}}>{client.name}</span>
+                <span className='text-14' style={{fontWeight: 800}}>{client.name} - {ClientStatus[client.clientStatus]}</span>
+                <span className='text-14'>Location: {client.city}</span>
                 <span className='text-14'>{client.email}</span>
-                <span className='text-14'>{client.dotNumber}</span>
-                <span className='text-14'>{ClientStatus[client.clientStatus]} - {AppRoles[client.appRoles]}</span>
+                <span className='text-14'>DOT: {client.dotNumber}</span>
+                <span className='text-14'>Time Zone Shift: {client.timeZoneShift}</span>
+                <span className='text-14'>Role: {AppRoles[client.appRoles]}</span>
                 <span className='text-14'>Created At: {
                         client.createdAt.toString().includes("Z") ?
                         new Date(client.createdAt).toLocaleDateString("en-US", {year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit"}) :
@@ -56,12 +75,14 @@ export default function ClientCard({ client, onEdit }: ClientCardProps): JSX.Ele
             <Box sx={{ flexBasis: { xs: "24px", sm: "140px" }, flexShrink: 0 }}>
                 <Box sx={{ flexGrow: 0, display: { xs: 'none', md: 'flex' }, alignItems: 'right', justifyContent: "end" }}>
                     {loadingState && <CircularProgress size="1rem" sx={{ m: '4px 10px 0 0' }} />}
-                    <Tooltip title="Send email" placement="top">
-                        <a href={`mailto:${client.email}`} >
-                            <MailOutlineIcon sx={{ cursor: 'pointer', margin: '0 5px', fill: 'var(--green)' }} />
-                        </a>
-                    </Tooltip>
-                    <Divider orientation="vertical" flexItem />
+                    {
+                        client.clientStatus !== ClientStatus.Invited &&
+                        <Tooltip title="Invite Carrier" placement="top">
+                            <ReportGmailerrorredOutlinedIcon sx={{ cursor: 'pointer', margin: '0 5px', fill: 'var(--blue)' }}
+                                onClick={() => onInvite()} />
+                        </Tooltip>
+                    }
+                    {client.clientStatus !== ClientStatus.Invited && <Divider orientation="vertical" flexItem />}
                     <Tooltip title="Edit" placement="top">
                         <EditIcon sx={{ cursor: 'pointer', margin: '0 5px', fill: 'var(--yellow)' }} onClick={() => onEdit(client)} />
                     </Tooltip>                        
@@ -81,14 +102,16 @@ export default function ClientCard({ client, onEdit }: ClientCardProps): JSX.Ele
                         anchorEl={anchorEl} keepMounted transformOrigin={{ vertical: 'top', horizontal: 'right' }}
                         open={Boolean(anchorEl)} onClose={handleClose}
                     >
-                        <MenuItem onClick={handleClose}>
-                            <a href={`mailto:${client.email}`} style={{ textDecoration: 'none', color: 'rgb(32,33,36)' }} >
-                                <Grid container direction="row" justifyContent="flex-start" alignItems="center" gap="10px">
-                                    <MailOutlineIcon sx={{ cursor: 'pointer', margin: '0 5px', fill: 'var(--green)' }} />
-                                    <span className='text-16'>Send email</span>
+                        {
+                            client.clientStatus !== ClientStatus.Invited &&
+                            <MenuItem onClick={handleClose}>
+                                <Grid container direction="row" justifyContent="flex-start" alignItems="center" gap="10px"
+                                    onClick={() => onInvite()}>
+                                    <ReportGmailerrorredOutlinedIcon sx={{ cursor: 'pointer', margin: '0 5px', fill: 'var(--blue)' }} />
+                                    <span className='text-16'>Invite Carrier</span>
                                 </Grid>
-                            </a>
-                        </MenuItem>
+                            </MenuItem>
+                        }
                         <MenuItem onClick={handleClose}>
                             <Grid container direction="row" justifyContent="flex-start" alignItems="center" gap="10px" onClick={() => onEdit(client)}>
                                 <EditIcon sx={{ cursor: 'pointer', margin: '0 5px', fill: 'var(--yellow)' }} />

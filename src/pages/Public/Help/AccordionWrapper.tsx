@@ -13,7 +13,7 @@ export default function AccordionWrapper({ title, contentId, panelId, children }
                 aria-controls={contentId}
                 id={panelId}
             >
-                <Typography>{title}</Typography>
+                <Typography sx={{fontWeight: 700}}>{title}</Typography>
             </AccordionSummary>
             <AccordionDetails>
                 {children}

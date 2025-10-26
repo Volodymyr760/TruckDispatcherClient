@@ -12,13 +12,15 @@ export interface IClient {
     dotNumber: string,
     createdAt: Date,
     invitedAt?: Date,
+    timeZoneShift: number,
     notes?: string
 }
 
 export enum ClientStatus {
     Created,
     Invited,
-    Stopped
+    Stopped,
+    All
 }
 
 export interface ClientSearchParams extends ISearchParams<IClient> {

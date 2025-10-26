@@ -14,7 +14,7 @@ const initialState: ClientState = {
         itemList: [],
         pageCount: 0,
         totalItemsCount: 0,
-        clientStatus: ClientStatus.Created,
+        clientStatus: ClientStatus.All,
         appRoles: AppRoles.Carrier
     },
     loading: true,

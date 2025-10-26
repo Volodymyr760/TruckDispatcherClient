@@ -27,6 +27,14 @@ export async function createClientAxios(client: IClient): Promise<IClient> {
 }
 
 /**
+ * Sends invitation email to the Client specified by identifier
+ * @param id<string> Client identifier
+ */
+export async function getSendInvitationAxios(id: string): Promise<IClient> {
+    return (await axios.get(`/client/sendInvitation/${id}`)).data
+}
+
+/**
  * Updates the existing Client
  * @param client<IClient> Object of type IClient
  * @returns<IClient> Updated Client object

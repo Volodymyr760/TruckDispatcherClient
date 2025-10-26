@@ -150,10 +150,7 @@ export default function LoadForm({ load, closeForm }: LoadFormProps): JSX.Elemen
             .max(450, 'Requirements may not be greater than 450 characters.')
     })
 
-    const onSnackbarClose = (event: React.SyntheticEvent | Event, reason?: string) => {
-        if (reason === 'clickaway') return
-        setSnackBarState(null)
-    };
+    const onSnackbarClose = (event: React.SyntheticEvent | Event, reason?: string) => setSnackBarState(null)
 
     const toggleDrawer = (anchor: string, open: boolean) =>
         (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -548,11 +545,7 @@ export default function LoadForm({ load, closeForm }: LoadFormProps): JSX.Elemen
                     </MuiButton>                    
                 </Grid>
             </form>
-            <Snackbar
-                open={snackBarState !== null}
-                autoHideDuration={4000}
-                onClose={onSnackbarClose}
-            >
+            <Snackbar open={snackBarState !== null} autoHideDuration={4000} onClose={onSnackbarClose} >
                 <Alert className="text-16" severity={snackBarState?.severity}>{snackBarState?.message}</Alert>
             </Snackbar>
         </SwipeableDrawer>

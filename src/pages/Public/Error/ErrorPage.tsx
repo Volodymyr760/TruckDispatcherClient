@@ -9,8 +9,8 @@ export default function ErrorPage({ status = '404', message = 'Page Not Found' }
     return (
         <Container maxWidth="lg" className='layout-container' >
             <Helmet>
-                <title>TruckDispatcher.com - Page not found</title>
-                <meta name="description" content="Advanced truck loads search engine for owner operators and dispatchers - Truskdispatcher.com" />
+                <title>TruckDispatcher.top - Page not found</title>
+                <meta name="description" content="Advanced truck loads search engine for owner operators and dispatchers - Truckdispatcher.top" />
             </Helmet>
             <PageHeader title="Oops! Something went wrong." />
             <Grid>

@@ -1,6 +1,8 @@
 import axios from 'axios'
-import { ChangeRolesDto, IAuth, IChangeEmailDto, IChangePasswordDto, 
-    ILoginDto, IRegisterDto, IResetPasswordDto } from '../types/auth'
+import {
+    ChangeRolesDto, IAuth, IChangeEmailDto, IChangePasswordDto,
+    ILoginDto, IRegisterDto, IResetPasswordDto
+} from '../types/auth'
 import { IUser, IUserSearchParams, IUserSearchSettings } from '../types/user'
 import { IPatchDocumentItem } from '../types/common/patchDocument'
 
@@ -78,8 +80,14 @@ export async function loginAxios(loginDto: ILoginDto): Promise<IAuth> {
     return (await axios.post<IAuth>("/user/login", loginDto)).data
 }
 
-export async function logoutAxios(email: string, token: string) {
-    await axios.get(`/user/logout/${email}`, { headers: { Authorization: `Bearer ${token}` } })
+export async function logoutAxios(email: string) {
+    // await axios.get(`/user/logout/${email}`, { headers: { Authorization: `Bearer ${token}` } })
+    await axios.get(`/user/logout/${email}`)
+}
+
+export async function getAuthModelAxios(id: string): Promise<IAuth> {
+    // await axios.get(`/user/logout/${email}`, { headers: { Authorization: `Bearer ${token}` } })
+    return (await axios.get(`/user/getAuthModel?id=${id}`)).data
 }
 
 /**

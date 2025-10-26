@@ -253,16 +253,18 @@ export default function DriverForm({ driver, closeForm }: DriverFormProps): JSX.
                         <Controller name="firstName" control={control}
                             render={({ field }) =>
                                 <TextField  {...field} label="First Name" type="text" fullWidth
-                                sx={{ margin: 0, "& .MuiOutlinedInput-root": muiTextFieldStyle, "& .MuiInputLabel-outlined": muiTextFieldStyle}}
-                                    InputProps={{
-                                        endAdornment: (
-                                            <InputAdornment position="end">
-                                                <IconButton edge="end" >
-                                                    <AccountCircleIcon />
-                                                </IconButton>
-                                            </InputAdornment>),
-                                    }}
-                                    error={Boolean(errors.firstName)} helperText={errors.firstName?.message} />}
+                                    inputRef={input => input && input.focus()}
+                                    sx={{ margin: 0, "& .MuiOutlinedInput-root": muiTextFieldStyle, "& .MuiInputLabel-outlined": muiTextFieldStyle}}
+                                        InputProps={{
+                                            endAdornment: (
+                                                <InputAdornment position="end">
+                                                    <IconButton edge="end" >
+                                                        <AccountCircleIcon />
+                                                    </IconButton>
+                                                </InputAdornment>),
+                                        }}
+                                    error={Boolean(errors.firstName)} helperText={errors.firstName?.message} 
+                                />}
                         />
                     </Grid>
                     {/* Last Name */}

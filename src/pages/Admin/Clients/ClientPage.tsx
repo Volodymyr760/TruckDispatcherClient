@@ -5,7 +5,6 @@ import { useTypedSelector } from "../../../hooks/useTypedSelector"
 import { AppRoles } from "../../../types/common/appRoles"
 import { ClientStatus, IClient } from "../../../types/client"
 import { muiTextFieldStyle } from "../../../types/common/muiTextFieldStyle"
-import { ISnackBarMessageState } from "../../../types/common/snackBarMessageState"
 import { Alert, Container, Grid, Snackbar, TextField, Tooltip } from "@mui/material"
 import ErrorMessage from "../../../components/Messages/ErrorMessage"
 import { IntersectionObserverComponent } from "../../../components/IntersectionObserver/IntersectionObserverComponent"
@@ -18,13 +17,12 @@ import ClientForm from "./ClientForm"
 export default function ClientPage(): JSX.Element {
     const { clientSearchParams, loading, error } = useTypedSelector(state => state.client)
     const { auth } = useTypedSelector(state => state.auth)
-    const { searchClients, loadMoreClients, setClientPage, setClientSearchCriteria } = useActions()
-    const [snackBarState, setSnackBarState] = useState<null | ISnackBarMessageState>(null)
+    const { searchClients, loadMoreClients, setClientPage, setClientError, setClientSearchCriteria } = useActions()
     const [client, setClient] = useState<IClient | null>(null)
-
-    const сloseSnackbar = (event: React.SyntheticEvent | Event, reason?: string) => {
-        if (reason === 'clickaway') return
-        setSnackBarState(null)
+    
+    const clearErrorAndCloseSnackbar = (event: React.SyntheticEvent | Event, reason?: string) => {
+        // if (reason === 'clickaway') return
+        setClientError(null)
     };
 
     useEffect(() => {
@@ -74,6 +72,7 @@ export default function ClientPage(): JSX.Element {
             dotNumber: '',
             createdAt: new Date(),
             invitedAt: null,
+            timeZoneShift: -5,
             notes: '' 
         }
         setClient(client)
@@ -82,8 +81,8 @@ export default function ClientPage(): JSX.Element {
     return (
         <Container maxWidth="lg" className='layout-container' >
             <Helmet>
-                <title>Truskdispatcher.com - Clients</title>
-                <meta name="description" content="Advanced truck loads search engine for owner operators and dispatchers - Truskdispatcher.com" />
+                <title>Truckdispatcher.top - Clients</title>
+                <meta name="description" content="Advanced truck loads search engine for owner operators and dispatchers - Truckdispatcher.top" />
             </Helmet>
             {/*Page Header */}
             <Grid container spacing={2} direction='row' justifyContent={'space-between'} alignItems={'center'}>
@@ -123,8 +122,8 @@ export default function ClientPage(): JSX.Element {
             }
             <IntersectionObserverComponent onIntersection={handleIntersection} />
             {client && <ClientForm client={client} closeForm={() => setClient(null)} />}
-            <Snackbar open={snackBarState !== null} autoHideDuration={4000} onClose={сloseSnackbar}>
-                <Alert severity={snackBarState?.severity}>{snackBarState?.message}</Alert>
+            <Snackbar open={error !== null} autoHideDuration={4000} onClose={clearErrorAndCloseSnackbar}>
+                <Alert severity={"error"}>{error}</Alert>
             </Snackbar>
         </Container>
     )

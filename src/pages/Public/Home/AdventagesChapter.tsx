@@ -1,66 +1,36 @@
 import { AdventageCardProps } from './types'
 import { Grid } from '@mui/material'
-import AlarmIcon from '@mui/icons-material/Alarm'
-import LocationOnIcon from '@mui/icons-material/LocationOn'
-import MobileFriendlyIcon from '@mui/icons-material/MobileFriendly'
-import PaletteIcon from '@mui/icons-material/Palette'
-import PersonSearchIcon from '@mui/icons-material/PersonSearch'
-import StreetviewIcon from '@mui/icons-material/Streetview'
+import DoneAllIcon from '@mui/icons-material/DoneAll';
+import SettingsIcon from '@mui/icons-material/Settings'
+import TravelExploreIcon from '@mui/icons-material/TravelExplore'
 
 const advettagesList: AdventageCardProps[] = [
     {
         id: "adv1",
-        icon: <StreetviewIcon fontSize='large' sx={{ fill: 'var(--lightGrey)', mr: "10px" }} />,
-        title: "Remote Control",
+        icon: <SettingsIcon fontSize='large' sx={{ fill: 'var(--lightGrey)', mr: "10px" }} />,
+        title: "Fleet Setup",
         image: (process.env.NODE_ENV === "production" ?
             process.env.REACT_APP_BASE_API_URL_PROD :
-            process.env.REACT_APP_BASE_API_URL_DEV) + "/Assets/remote-control.jpg",
-        text: "Monitor remote facilities and the performance of workers or equipment."
+            process.env.REACT_APP_BASE_API_URL_DEV) + "/Assets/setup_fleet.jpg",
+        text: "Step 1: Enter your trucks and drivers details. We support the following equipment types: Van, Reefer, Flatbed."
     },
     {
         id: "adv2",
-        icon: <PersonSearchIcon fontSize='large' sx={{ fill: 'var(--lightGrey)', mr: "10px" }} />,
-        title: "Personification",
+        icon: <TravelExploreIcon fontSize='large' sx={{ fill: 'var(--lightGrey)', mr: "10px" }} />,
+        title: "Searching",
         image: (process.env.NODE_ENV === "production" ?
             process.env.REACT_APP_BASE_API_URL_PROD :
-            process.env.REACT_APP_BASE_API_URL_DEV) + "/Assets/personification.jpg",
-        text: "Contact list support. Forms can be assigned to an individual contact to compare different filling results, which can also be commented on."
+            process.env.REACT_APP_BASE_API_URL_DEV) + "/Assets/searching_loads_online.jpg",
+        text: "Step 2: Search for loads as on a regular load board. Mark profitable orders to automatically save them to your own list."
     },
     {
         id: "adv3",
-        icon: <MobileFriendlyIcon fontSize='large' sx={{ fill: 'var(--lightGrey)', mr: "10px" }} />,
-        title: "Use Mobile",
+        icon: <DoneAllIcon fontSize='large' sx={{ fill: 'var(--lightGrey)', mr: "10px" }} />,
+        title: "Key Results",
         image: (process.env.NODE_ENV === "production" ?
             process.env.REACT_APP_BASE_API_URL_PROD :
-            process.env.REACT_APP_BASE_API_URL_DEV) + "/Assets/use-mobile.jpg",
-        text: "All operations with form are available from a smartphone, tablet, or computer."
-    },
-    {
-        id: "adv4",
-        icon: <PaletteIcon fontSize='large' sx={{ fill: 'var(--lightGrey)', mr: "10px" }} />,
-        title: "Branding",
-        image: (process.env.NODE_ENV === "production" ?
-            process.env.REACT_APP_BASE_API_URL_PROD :
-            process.env.REACT_APP_BASE_API_URL_DEV) + "/Assets/branding.jpg",
-        text: "Add the company logo and brand colors in the settings - form elements will be stylized when viewed by recipients."
-    },
-    {
-        id: "adv5",
-        icon: <LocationOnIcon fontSize='large' sx={{ fill: 'var(--lightGrey)', mr: "10px" }} />,
-        title: "GPS Localization",
-        image: (process.env.NODE_ENV === "production" ?
-            process.env.REACT_APP_BASE_API_URL_PROD :
-            process.env.REACT_APP_BASE_API_URL_DEV) + "/Assets/gps-localization.jpeg",
-        text: "When filling out the form, when uploading images, geo-positions are stored (the corresponding function of the gadget must be enabled), which you can view in Google Maps."
-    },
-    {
-        id: "adv6",
-        icon: <AlarmIcon fontSize='large' sx={{ fill: 'var(--lightGrey)', mr: "10px" }} />,
-        title: "Reminders",
-        image: (process.env.NODE_ENV === "production" ?
-            process.env.REACT_APP_BASE_API_URL_PROD :
-            process.env.REACT_APP_BASE_API_URL_DEV) + "/Assets/reminder.jpg",
-        text: "Set up an automatic reminder for the form - an email will be sent to the assigned contact with a link to fill out the form."
+            process.env.REACT_APP_BASE_API_URL_DEV) + "/Assets/financial_results.jpg",
+        text: "Step 3: The Dashboard page displays key results of completed trips."
     }
 ]
 
@@ -69,7 +39,7 @@ export default function AdventagesChapter() {
         <Grid container alignItems="flex-start">
             {
                 advettagesList.map(adventage =>
-                    <Grid key={adventage.id} item xs={12} sm={6} lg={4} textAlign='center' sx={{ mb: "30px" }}>
+                    <Grid key={adventage.id} item xs={12} md={4} textAlign='center' sx={{ mb: "30px" }}>
                         <Grid container direction='row' justifyContent='center' alignItems='center'>
                             <Grid item >
                                 {adventage.icon}

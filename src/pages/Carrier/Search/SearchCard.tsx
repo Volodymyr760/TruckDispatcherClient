@@ -29,6 +29,7 @@ export default function SearchCard({importLoad, isBackhaul}: SearchCardProps): J
     const [snackBarState, setSnackBarState] = useState<null | ISnackBarMessageState>(null)
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
     const [showShipperInfo, setShowShipperInfo] = useState<boolean>(false)
+    const [showRequirements, setShowRequirements ] = useState<boolean>(false)
 
     const [loadingSaveAsLoad, setLoadingSaveAsLoad] = useState<boolean>(false)
     const [successSaveAsLoad, setSuccessSaveAsLoad] = useState<string>("")
@@ -81,7 +82,9 @@ export default function SearchCard({importLoad, isBackhaul}: SearchCardProps): J
             let loadToCreate = await createLoadAxios(load)
             if(loadToCreate.truckId) loadToCreate.truck = truckToApply
             createLoadFromImportLoad(loadToCreate)
-            setSuccessSaveAsLoad(`Load for ${loadToCreate.truck.name} ${loadToCreate.truck.licensePlate} saved.`)
+            const succsessMessage = loadToCreate.truck ? `Load for ${loadToCreate.truck.name} ${loadToCreate.truck.licensePlate} saved.` :
+                'Load saved, please assign a truck.'
+            setSuccessSaveAsLoad(succsessMessage)
         } catch (error) {
             setErrorSaveAsLoad(error.message || "Unable to save the load.")
         } finally {
@@ -200,6 +203,20 @@ export default function SearchCard({importLoad, isBackhaul}: SearchCardProps): J
                             }}
                         />
                     </div>
+                </Box>
+                {/* Requirements */}
+                {
+                    importLoad.requirements.length > 0 &&
+                    <div style={{display: 'flex'}} onClick={() => setShowRequirements(!showRequirements)}>
+                        <span className='text-12' style={{margin: "1px 5px"}}>Requirements</span>
+                        { 
+                            showRequirements ? 
+                            <ExpandLessIcon sx={{fill: 'var(--lightGrey)', cursor: 'pointer'}}/> : 
+                            <ExpandMoreIcon sx={{fill: 'var(--lightGrey)', cursor: 'pointer'}}/>}
+                    </div>
+                }
+                <Box sx={{ display: !showRequirements && "none", padding: "0 0 5px 10px" }}>
+                    <span className='text-12'>{importLoad.requirements}</span>
                 </Box>
                 { errorSaveAsLoad && <p className="error-wrapper">{errorSaveAsLoad}</p> }
                 { successSaveAsLoad && <p className="success-wrapper">{successSaveAsLoad}</p> }

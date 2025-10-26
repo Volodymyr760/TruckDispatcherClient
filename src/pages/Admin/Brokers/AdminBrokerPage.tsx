@@ -79,13 +79,13 @@ export default function DriverPage(): JSX.Element {
     return (
         <Container maxWidth="lg" className='layout-container' >
             <Helmet>
-                <title>Truskdispatcher.com - Brokers</title>
-                <meta name="description" content="Advanced truck loads search engine for owner operators and dispatchers - Truskdispatcher.com" />
+                <title>Truckdispatcher.top - Brokers</title>
+                <meta name="description" content="Advanced truck loads search engine for owner operators and dispatchers - Truckdispatcher.top" />
             </Helmet>
             {/*Page Header */}
             <Grid container spacing={2} direction='row' justifyContent={'space-between'} alignItems={'center'}>
                 <Grid item sx={{ width: {xs: "100%", md: "48%" } }}>
-                    <Tooltip title="First / Last Name" placement="bottom">
+                    <Tooltip title="Name / Short Name" placement="bottom">
                         <TextField label="Search" type="text" margin="none" fullWidth
                             defaultValue={brokerSearchParams.searchCriteria}
                             sx={{"& .MuiOutlinedInput-root": muiTextFieldStyle, "& .MuiInputLabel-outlined": muiTextFieldStyle}}

@@ -43,7 +43,7 @@ export default function LoginForm(): JSX.Element {
             setAuthLoading(true)
             setAuthError(null)
             const authModel = await loginAxios(loginModel)
-            localStorage.setItem("auth", JSON.stringify(authModel))
+            localStorage.setItem("id", authModel.user.id)
             login(authModel)
             // set userId to each stores where it uses: driver, invoice, load, notification, truck
             setDriverUserId(authModel.user.id)
@@ -66,11 +66,10 @@ export default function LoginForm(): JSX.Element {
         <form onSubmit={handleSubmit(onSubmit)}>
             <Grid container direction="column" alignContent="center">
                 <Grid item xs={12} md={6}>
-                    <Controller
-                        name="email"
-                        control={control}
+                    <Controller name="email" control={control}
                         render={({ field }) =>
                             <TextField {...field} label="Email" type="email" margin="normal" fullWidth
+                                inputRef={input => input && input.focus()}
                                 sx={{"& .MuiOutlinedInput-root": muiTextFieldStyle, "& .MuiInputLabel-outlined": muiTextFieldStyle}}
                                 InputProps={{
                                     endAdornment: (

@@ -1,15 +1,12 @@
-import { IAuth } from "../../types/auth"
 import { OrderType } from "../../types/common/orderType"
 import { AccountStatus, IUser, UserAction, UserActionTypes, UserState } from "../../types/user"
-
-const auth: IAuth = JSON.parse(localStorage.getItem("auth"))
 
 const initialState: UserState = {
     userSearchParams: {
         pageSize: 10,
         currentPage: 1,
         searchCriteria: "",
-        userId: auth ? auth.user.id : "",
+        userId: localStorage.getItem("id") || "",
         sortField: "First name",
         order: OrderType.Ascending,
         includeNavProperties: false,
@@ -27,13 +24,8 @@ export const userReducer = (state: UserState = initialState, action: UserAction)
         case UserActionTypes.GET_USERS:
             return { ...state, userSearchParams: action.payload }
         case UserActionTypes.LOAD_MORE_USERS:
-            return {
-                ...state,
-                userSearchParams: {
-                    ...action.payload,
-                    itemList: state.userSearchParams.itemList.concat(action.payload.itemList)
-                },
-            }
+            return { ...state, userSearchParams: {
+                    ...action.payload, itemList: state.userSearchParams.itemList.concat(action.payload.itemList) }}
         case UserActionTypes.SET_USER_PAGE:
             return { ...state, userSearchParams: { ...state.userSearchParams, currentPage: action.payload } }
         case UserActionTypes.SET_USER_ERROR:

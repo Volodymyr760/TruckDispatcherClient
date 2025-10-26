@@ -19,7 +19,7 @@ import './styles.css'
 export default function LoadPage(): JSX.Element {
     const { loadSearchParams, loading, error } = useTypedSelector(state => state.load)
     const { auth } = useTypedSelector(state => state.auth)
-    const { searchLoads, setLoadPage, setLoadSearchCriteria, setLoadEquipment, setLoadStatus, loadMoreLoads } = useActions()
+    const { searchLoads, setLoadPage, setLoadSearchCriteria, setLoadEquipment, setLoadError, setLoadStatus, loadMoreLoads } = useActions()
     const [snackBarState, setSnackBarState] = useState<null | ISnackBarMessageState>(null)
     const [load, setLoad] = useState<ILoad | null>(null)
 
@@ -28,8 +28,8 @@ export default function LoadPage(): JSX.Element {
         LoadStatus.Completed, LoadStatus.Payed]
 
     const сloseSnackbar = (event: React.SyntheticEvent | Event, reason?: string) => {
-        if (reason === 'clickaway') return
         setSnackBarState(null)
+        setLoadError(null)
     };
 
     const handleIntersection = (entries: IntersectionObserverEntry[]) => {
@@ -80,6 +80,10 @@ export default function LoadPage(): JSX.Element {
     const onEdit = (load: null | ILoad) => setLoad(load)
 
     const onCreate = () => {
+        if(new Date(auth.user.finishPayedPeriodDate) < new Date()){
+            setSnackBarState({ message: "Oops! Your paid period has expired.", severity: "warning" })
+            return
+        }
         const load: ILoad = { 
             id: null,  
             referenceId: '#1', 
@@ -100,8 +104,8 @@ export default function LoadPage(): JSX.Element {
     return (
         <Container maxWidth="lg" className='layout-container' >
             <Helmet>
-                <title>Truskdispatcher.com - Loads</title>
-                <meta name="description" content="Advanced truck loads search engine for owner operators and dispatchers - Truskdispatcher.com" />
+                <title>Truckdispatcher.top - Loads</title>
+                <meta name="description" content="Advanced truck loads search engine for owner operators and dispatchers - Truckdispatcher.top" />
             </Helmet>
             {/* Page Header */}
             <Grid container spacing={2} direction='row' justifyContent={'space-between'} alignItems={'center'}>
@@ -180,12 +184,11 @@ export default function LoadPage(): JSX.Element {
             <IntersectionObserverComponent onIntersection={handleIntersection} />
             {(loadSearchParams.itemList.length > 0 && loading) && <Spinner />}
             {load && <LoadForm load={load} closeForm={() => setLoad(null)} />}
-            <Snackbar
-                open={snackBarState !== null}
-                autoHideDuration={4000}
-                onClose={сloseSnackbar}
-            >
+            <Snackbar open={snackBarState !== null} autoHideDuration={4000} onClose={сloseSnackbar}>
                 <Alert severity={snackBarState?.severity}>{snackBarState?.message}</Alert>
+            </Snackbar>
+            <Snackbar open={error !== null} autoHideDuration={4000} onClose={сloseSnackbar}>
+                <Alert severity="error">{error}</Alert>
             </Snackbar>
         </Container>
     )

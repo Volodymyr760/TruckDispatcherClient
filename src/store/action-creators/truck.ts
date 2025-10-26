@@ -1,5 +1,5 @@
 import { Dispatch } from "redux"
-import { getTrucksAxios, deleteTruckAxios, updateTruckAxios, createTruckAxios } from "../../api/truck"
+import { getTrucksAxios, updateTruckAxios, createTruckAxios } from "../../api/truck"
 import { OrderType } from "../../types/common/orderType"
 import { ITruck, ITruckSearchParams, TruckAction, TruckActionTypes, TruckStatus } from "../../types/truck"
 import { Equipment } from "../../types/common/equipment"
@@ -109,7 +109,6 @@ export const removeTruck = (id: string) => {
     return async (dispatch: Dispatch<TruckAction>) => {
         try {
             dispatch({ type: TruckActionTypes.SET_TRUCK_ERROR, payload: null })
-            await deleteTruckAxios(id)
             dispatch({ type: TruckActionTypes.REMOVE_TRUCK, payload: id })
         } catch (error) {
             dispatch({ type: TruckActionTypes.SET_TRUCK_ERROR, payload: error.message || "Error while removing the truck." })

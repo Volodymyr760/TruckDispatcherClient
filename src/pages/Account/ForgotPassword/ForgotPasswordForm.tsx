@@ -51,15 +51,16 @@ export default function ForgotPasswordForm(): JSX.Element {
                         control={control}
                         render={({ field }) =>
                             <TextField {...field} label="Email" type="email" margin="normal" fullWidth
-                            sx={{"& .MuiOutlinedInput-root": muiTextFieldStyle, "& .MuiInputLabel-outlined": muiTextFieldStyle}}
-                                InputProps={{
-                                    endAdornment: (
-                                        <InputAdornment position="end">
-                                            <IconButton edge="end" >
-                                                <MailOutlineIcon />
-                                            </IconButton>
-                                        </InputAdornment>),
-                                }}
+                                inputRef={input => input && input.focus()}
+                                sx={{"& .MuiOutlinedInput-root": muiTextFieldStyle, "& .MuiInputLabel-outlined": muiTextFieldStyle}}
+                                    InputProps={{
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                <IconButton edge="end" >
+                                                    <MailOutlineIcon />
+                                                </IconButton>
+                                            </InputAdornment>),
+                                    }}
                                 error={Boolean(errors.email)} helperText={errors.email?.message}
                             />
                         }

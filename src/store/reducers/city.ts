@@ -1,15 +1,12 @@
 import { OrderType } from "../../types/common/orderType"
 import { CityAction, CityActionTypes, CityState, ICity } from "../../types/city"
-import { IAuth } from "../../types/auth"
-
-const auth: IAuth = JSON.parse(localStorage.getItem("auth"))
 
 const initialState: CityState = {
     citySearchParams: {
         pageSize: 10,
         currentPage: 1,
         searchCriteria: "",
-        userId: auth ? auth.user.id : "",
+        userId: localStorage.getItem("id") || "",
         sortField: "First Name",
         order: OrderType.Ascending,
         includeNavProperties: false,

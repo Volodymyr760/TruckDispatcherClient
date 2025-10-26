@@ -1,16 +1,13 @@
-import { IAuth } from "../../types/auth"
 import { Equipment } from "../../types/common/equipment"
 import { OrderType } from "../../types/common/orderType"
 import { LoadAction, LoadActionTypes, LoadState, ILoad, LoadStatus } from "../../types/load"
-
-const auth: IAuth = JSON.parse(localStorage.getItem("auth"))
 
 const initialState: LoadState = {
     loadSearchParams: {
         pageSize: 10,
         currentPage: 1,
         searchCriteria: "",
-        userId: auth ? auth.user.id : "",
+        userId: localStorage.getItem("id") || "",
         sortField: "Pickup",
         order: OrderType.Descending,
         includeNavProperties: true,

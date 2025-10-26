@@ -3,7 +3,7 @@ export const EMAIL_REG_EXP =/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)
 /**
  * Must contain at least one uppercase, one symbol and at least 7 or more characters
  */
-export const PASSWORD_REG_EXP =/(?=.*[a-z])(?=.*[A-Z]).{7,}$/;
+export const PASSWORD_REG_EXP =/^(?=.{7,})(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+.,!?=]).*$/;
 
 /**
  * Must contain from 11 up to 13 characters

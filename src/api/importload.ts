@@ -76,6 +76,13 @@ export async function deleteImportLoadAxios(id: string): Promise<void> {
 }
 
 /**
+ * Delete's ImportLoads duplicated by ReferenceId & Equipment
+ */
+export async function deleteDuplicatedImportLoadAxios(): Promise<void> {
+    return await axios.delete(`/importLoad/deleteDuplicates`)
+}
+
+/**
  * Delete's all ImportLoads with pickup before current datetime
  */
 export async function deleteLegacyImportLoadAxios(): Promise<void> {

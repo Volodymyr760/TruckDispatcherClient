@@ -1,15 +1,12 @@
-import { IAuth } from "../../types/auth"
 import { OrderType } from "../../types/common/orderType"
 import { BrokerAction, BrokerActionTypes, BrokersState, IBroker } from "../../types/broker"
-
-const auth: IAuth = JSON.parse(localStorage.getItem("auth"))
 
 const initialState: BrokersState = {
     brokerSearchParams: {
         pageSize: 10,
         currentPage: 1,
         searchCriteria: "",
-        userId: auth ? auth.user.id : "",
+        userId: localStorage.getItem("id") || "",
         sortField: "Name",
         order: OrderType.Ascending,
         includeNavProperties: false,

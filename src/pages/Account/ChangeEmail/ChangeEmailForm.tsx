@@ -37,6 +37,9 @@ export default function ChangeEmailForm(): JSX.Element {
             .max(256, 'Email may not be greater than 256 characters.')
             .matches(EMAIL_REG_EXP, "Email is not valid and may not be greater than 256 characters."),
         password: Yup.string()
+            .required('Required field.')
+            .min(7, 'Must contain at least one uppercase, one symbol and at least 7 or more characters')
+            .max(100, 'Password may not be greater than 100 characters.')
             .matches(PASSWORD_REG_EXP, "Password is not valid. Must contain at least one uppercase, one symbol and at least 7 or more characters."),
     })
 
@@ -53,7 +56,7 @@ export default function ChangeEmailForm(): JSX.Element {
             await changeEmailAxios(changeEmailDto);
             reset();
             setTimeout(() => {
-                localStorage.removeItem('auth');
+                localStorage.removeItem('id');
                 login(null);
                 navigate(RouteNames.LOGIN);
             }, 2000);
@@ -68,7 +71,7 @@ export default function ChangeEmailForm(): JSX.Element {
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <Grid container direction="column" alignContent="center">
-                <Grid item>
+                <Grid item xs={12} md={6}>
                     <Controller name="existingEmail" control={control}
                         render={({ field }) =>
                             <TextField  {...field} label="Existing Email" type="email"
@@ -85,11 +88,11 @@ export default function ChangeEmailForm(): JSX.Element {
                                 error={Boolean(errors.existingEmail)} helperText={errors.existingEmail?.message} />}
                     />
                 </Grid>
-                <Grid item>
+                <Grid item xs={12} md={6}>
                     <Controller name="newEmail" control={control}
                         render={({ field }) =>
-                            <TextField  {...field} label="New Email" type="email"
-                                margin="normal" fullWidth
+                            <TextField  {...field} label="New Email" type="email" margin="normal" fullWidth
+                                inputRef={input => input && input.focus()}
                                 sx={{"& .MuiOutlinedInput-root": muiTextFieldStyle, "& .MuiInputLabel-outlined": muiTextFieldStyle}}
                                 InputProps={{
                                     endAdornment: (
@@ -102,7 +105,7 @@ export default function ChangeEmailForm(): JSX.Element {
                                 error={Boolean(errors.newEmail)} helperText={errors.newEmail?.message} />}
                     />
                 </Grid>
-                <Grid item>
+                <Grid item xs={12} md={6}>
                     <Controller name="password" control={control}
                         render={({ field }) =>
                             <TextField  {...field} label="Password" type={showPassword ? 'text' : 'password'}
@@ -121,10 +124,12 @@ export default function ChangeEmailForm(): JSX.Element {
                                         </InputAdornment>
                                     ),
                                 }}
-                                error={Boolean(errors.password)} helperText={errors.password?.message} />}
+                                error={Boolean(errors.password)} 
+                                helperText="Must contain at least one uppercase, one symbol and at least 7 or more characters" 
+                            />}
                     />
                 </Grid>
-                <Grid item sx={{ textAlign: "center", margin: { xs: '60px 0', sm: '60px auto' } }}>
+                <Grid item sx={{ textAlign: "center", margin: { xs: '60px 0', sm: '60px 150px 60px 150px' } }}>
                     <MuiButton variant="contained" type="submit">
                         {loading && <CircularProgress size="1rem" sx={{ mr: '10px' }} />} <span className="text-14" style={{color: 'var(--lightgreywhite)'}}>Send</span>
                     </MuiButton>                    

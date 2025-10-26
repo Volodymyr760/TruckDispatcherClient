@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { useActions } from "../../../hooks/useActions"
+import { deleteLoadAxios } from "../../../api/load"
 import { Equipment } from "../../../types/common/equipment"
 import { IImportLoad } from "../../../types/importload"
 import { LoadCardProps } from './types'
@@ -28,15 +29,21 @@ export default function LoadCard({ load, onEdit }: LoadCardProps): JSX.Element {
     const [currentImportLoad, setCurrentImportLoad] = useState<IImportLoad>(null)
     const [isToAnywhereState, setIsToAnywhereState] = useState<boolean>(false)
 
-    const { removeLoad } = useActions()
+    const { removeLoad, setLoadError } = useActions()
 
     const handleOpen = (event: React.MouseEvent<HTMLElement>) => setAnchorEl(event.currentTarget)
     const handleClose = () => setAnchorEl(null)
 
     const onDeleteLoad = async () => {
-        setLoadingState(true)
-        removeLoad(load.id)
-        setLoadingState(false)
+        try {
+            setLoadingState(true)
+            await deleteLoadAxios(load.id);
+            removeLoad(load.id)
+        } catch (error) {
+            setLoadError(error.message || "Error while removing the load.")
+        } finally {
+            setLoadingState(false)
+        }
     }
 
     return (

@@ -209,6 +209,10 @@ export default function SearchPage({ role }: SearchPageProps): JSX.Element {
     }
 
     const onSearch = () => {
+        if(new Date(auth.user.finishPayedPeriodDate) < new Date()){
+            setSnackBarState({ message: "Oops! Your paid period has expired.", severity: "warning" })
+            return
+        }
         if(importLoadSearchParams.truck === null || pickupDateState === null || importLoadSearchParams.origin === null) {
             setSnackBarState({ message: "Please choose truck, pickup start date and origin city.", severity: "error" })
             return
@@ -219,8 +223,8 @@ export default function SearchPage({ role }: SearchPageProps): JSX.Element {
     return (
         <>
             <Helmet>
-                <title>Truskdispatcher.com - Search</title>
-                <meta name="description" content="Advanced truck loads search engine for owner operators and dispatchers - Truskdispatcher.com" />
+                <title>Truckdispatcher.top - Search</title>
+                <meta name="description" content="Advanced truck loads search engine for owner operators and dispatchers - Truckdispatcher.top" />
             </Helmet>
             {/* Search settings */}
             <Grid container direction="row" justifyContent="space-between" alignItems="flex-start">

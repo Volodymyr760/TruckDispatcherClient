@@ -14,7 +14,6 @@ export default function HeatmapPage(): JSX.Element {
     const [equipment, setEquipment] = useState<Equipment>(Equipment.Van)
     const equipments: Equipment[] = [Equipment.Van, Equipment.Flatbed, Equipment.Reefer]
     
-
     const loadHeatmap = async () =>{
         let heatmaSearchResult = {
             pageSize: 25,
@@ -50,8 +49,8 @@ export default function HeatmapPage(): JSX.Element {
     return (
         <>
             <Helmet>
-                <title>Truskdispatcher.com - Heatmap</title>
-                <meta name="description" content="Advanced truck loads search engine for owner operators and dispatchers - Truskdispatcher.com" />
+                <title>Truckdispatcher.top - Heatmap</title>
+                <meta name="description" content="Advanced truck loads search engine for owner operators and dispatchers - Truckdispatcher.top" />
             </Helmet>
             <Container maxWidth="lg" className='layout-container-searchpage' sx={{minHeight: 200}} >
                 <p className="text-20" style={{ textAlign: "center", fontWeight: 600 }}>Supply and Demand Heatmap</p>

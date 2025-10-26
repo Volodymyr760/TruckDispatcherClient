@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { RouteNames } from '../../routing'
 import { LayoutProps } from './types'
@@ -8,12 +8,13 @@ import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import MenuIcon from '@mui/icons-material/Menu'
 import MuiDrawer from '@mui/material/Drawer'
-import { styled, createTheme, ThemeProvider } from '@mui/material/styles'
+import { styled } from '@mui/material/styles'
 import AppAvatar from '../AppBars/AppAvatar/AppAvatar'
 import HelpBar from '../AppBars/HelpBar/HelpBar'
 import LeftMenuItems from './LeftMenuItems'
 import NotificationBar from '../AppBars/NotificationBar/NotificationBar'
 import SettingsBar from '../AppBars/SettingsBar/SettingsBar'
+import ThemeContext from '../Context/ThemeContext'
 import '../../index.css';
 
 function Copyright(props: any) {
@@ -79,11 +80,12 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
     }),
 );
 
-const mdTheme = createTheme();
-
 export default function DemoAppBar({ children, title }: LayoutProps): JSX.Element {
     const [open, setOpen] = useState(false);
     const [snackBarState, setSnackBarState] = useState<null | ISnackBarMessageState>(null);
+
+    const themeContext = useContext(ThemeContext);
+    const { theme } = themeContext;
 
     const onSnackbarClose = (event: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') return;
@@ -93,18 +95,17 @@ export default function DemoAppBar({ children, title }: LayoutProps): JSX.Elemen
     const toggleDrawer = () => setOpen(!open);
 
     return (
-        <ThemeProvider theme={mdTheme}>
             <Box sx={{ display: 'flex', minHeight: '100%' }}>
                 <CssBaseline />
-                <AppBar position="absolute" open={open} sx={{ backgroundColor: 'white' }}>
+                <AppBar position="absolute" open={open}>
                     <Toolbar sx={{ pr: '24px' }}>
                         <IconButton edge="start" aria-label="open drawer"
                             onClick={toggleDrawer}
-                            sx={{ marginRight: '36px', ...(open && { display: 'none' }), color: "var(--lightGrey)" }}
+                            sx={{ marginRight: '36px', ...(open && { display: 'none' }) }}
                         >
                             <MenuIcon />
                         </IconButton>
-                        <Typography component="h1" variant="h6" color="var(--lightGrey)" noWrap fontFamily="Mulish" fontWeight={800} sx={{ flexGrow: 1 }}  >
+                        <Typography component="h1" variant="h6" noWrap fontFamily="Mulish" fontWeight={800} sx={{ flexGrow: 1 }}  >
                             {title}
                         </Typography>
                         <HelpBar />
@@ -117,13 +118,11 @@ export default function DemoAppBar({ children, title }: LayoutProps): JSX.Elemen
                 </AppBar>
                 <Drawer variant="permanent" open={open}>
                     <Toolbar sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', px: [1], }} >
-                        <Typography variant="h6" component="a" href={RouteNames.HOME} sx={{
-                            mr: 2, display: { xs: 'flex' }, fontSize: '24px', lineHeight: '1',
-                            fontFamily: 'Poppins, sans-serif', fontWeight: 600, color: 'var(--darkGrey)', textDecoration: 'none',
-                        }}
-                        >
+                        <Link to={RouteNames.HOME} style={{ fontSize: '24px', lineHeight: '1', fontWeight: 600, textDecoration: 'none', textTransform: 'none',
+                            color: theme === 'dark' ? 'white' : 'var(--darkGrey)'
+                        }}>
                             Dispatch
-                        </Typography>
+                        </Link>
                         <IconButton onClick={toggleDrawer}>
                             <ChevronLeftIcon />
                         </IconButton>
@@ -133,16 +132,7 @@ export default function DemoAppBar({ children, title }: LayoutProps): JSX.Elemen
                         <LeftMenuItems />
                     </List>
                 </Drawer>
-                <Box component="main"
-                    sx={{
-                        backgroundColor: (theme) =>
-                            theme.palette.mode === 'light'
-                                ? theme.palette.grey[100]
-                                : theme.palette.grey[900],
-                        flexGrow: 1,
-                        height: '100vh',
-                        overflow: 'auto'
-                    }}
+                <Box component="main" sx={{ flexGrow: 1, height: '100vh', overflow: 'auto'}}
                 >
                     <Toolbar />
                     <Container maxWidth="lg" sx={{ mt: 1, mb: 1, pt: 1, pb: 1, minHeight: 'calc(100vh - 110px)', marginBottom: '0' }}>
@@ -158,6 +148,5 @@ export default function DemoAppBar({ children, title }: LayoutProps): JSX.Elemen
                     <Alert severity={snackBarState?.severity}>{snackBarState?.message}</Alert>
                 </Snackbar>
             </Box>
-        </ThemeProvider>
     );
 }

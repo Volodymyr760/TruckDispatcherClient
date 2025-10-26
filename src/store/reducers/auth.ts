@@ -1,14 +1,12 @@
-import { AuthAction, AuthActionTypes, AuthState, IAuth } from "../../types/auth"
+import { AuthAction, AuthActionTypes, AuthState } from "../../types/auth"
 
 const initialState: AuthState = {
-    auth: JSON.parse(localStorage.getItem("auth")),
+    auth: null,
     loading: false,
     error: null,
 }
 
 export const authReducer = (state: AuthState = initialState, action: AuthAction) => {
-    let authFromLocalstorage: IAuth = JSON.parse(localStorage.getItem("auth"));
-
     switch (action.type) {
         case AuthActionTypes.LOGIN:
             return { ...state, auth: action.payload }
@@ -19,12 +17,8 @@ export const authReducer = (state: AuthState = initialState, action: AuthAction)
         case AuthActionTypes.SET_AUTH_LOADING:
             return { ...state, loading: action.payload }
         case AuthActionTypes.SET_USER_AVATAR:
-            authFromLocalstorage.user.avatar = action.payload
-            localStorage.setItem("auth", JSON.stringify(authFromLocalstorage))
             return { ...state, auth: { ...state.auth, user: { ...state.auth.user, avatar: action.payload } } }
         case AuthActionTypes.UPDATE_AUTH_USER:
-            authFromLocalstorage.user = action.payload
-            localStorage.setItem("auth", JSON.stringify(authFromLocalstorage))
             return { ...state, auth: { ...state.auth, user: action.payload } }
         default: return state
     }

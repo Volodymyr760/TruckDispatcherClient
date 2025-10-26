@@ -1,5 +1,7 @@
 :root {
     --blue: #1976D2;
+    --bgDark: #222;
+    --bgLight: #343434;
     --darkBlue: #07039E;
     --darkGrey: #4b605c;
     --green: #08914B;
@@ -17,26 +19,8 @@ body {
     font-weight: 400;
     line-height: 1.4rem !important;
     letter-spacing: 0;
-    background-color: white;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-label,
-ul{
-    font-family: "Mulish", sans-serif;
-    color: var(--darkGrey);
-}
-
-code {
-    font-family: "Courier New", monospace;
 }
 
 .loading-opacity {
@@ -45,10 +29,7 @@ code {
 }
 
 .main-menu-link {
-    font-family: "Mulish";
-    color: var(--darkGrey);
     text-decoration: none;
-    transition: 0.3s;
     white-space: nowrap;
     letter-spacing: 0.3px;
     text-transform: none;
@@ -83,9 +64,9 @@ code {
     transition: "background-color" 1s !important;
 }
 
-.table-row:hover {
+/* .table-row:hover {
     background-color: #f1f5f4 !important;
-}
+} */
 
 .table-cell {
     font-size: 0.9rem;
@@ -99,12 +80,12 @@ code {
 }
 
 .a-small-blue {
-    font-family: "Mulish";
+    /* font-family: "Mulish"; */
     font-style: normal;
     font-weight: 600;
     font-size: 12px;
     line-height: 15px;
-    color: #1976d2;
+    /* color: #1976d2; */
     cursor: pointer;
 }
 
@@ -141,7 +122,7 @@ code {
     margin-top: 16px;
     padding-top: 16px;
     padding-bottom: 16px;
-    background-color: white;
+    /* background-color: white; */
 }
 
 .layout-container-searchpage {
@@ -149,12 +130,12 @@ code {
     margin-top: 16px;
     padding-top: 16px;
     padding-bottom: 16px;
-    background-color: white;
+    /* background-color: white; */
 }
 
 .layout-container-grey {
     margin: 30px 0 30px 0 !important;
-    background-color: var(--lightgreywhite);
+    /* background-color: var(--lightgreywhite); */
     padding: 60px 30px 60px 30px;
 }
 
@@ -164,24 +145,18 @@ code {
 
 /*Page titles pt1, pt2, pt3*/
 .pt1 {
-    font-family: "Mulish";
-    color: var(--darkGrey);
     font-size: 32px;
     font-weight: 700;
     letter-spacing: 0;
 }
 
 .pt2 {
-    font-family: "Mulish";
-    color: var(--darkGrey);
     font-size: 24px;
     font-weight: 500;
     letter-spacing: 0;
 }
 
 .pt3 {
-    font-family: "Mulish";
-    color: var(--darkGrey);
     font-size: 16px;
     font-weight: 400;
     letter-spacing: 0;
@@ -189,28 +164,19 @@ code {
 }
 
 .text-20 {
-    font-family: "Mulish";
     font-size: 20px;
-    color: var(--darkGrey);
 }
 
-
 .text-16 {
-    font-family: "Mulish";
     font-size: 16px;
-    color: var(--darkGrey);
 }
 
 .text-14 {
-    font-family: "Mulish";
     font-size: 14px;
-    color: var(--darkGrey);
 }
 
 .text-12 {
-    font-family: "Mulish";
     font-size: 12px;
-    color: var(--darkGrey);
 }
 
 .text-10 {
@@ -220,9 +186,7 @@ code {
 }
 
 .text-8 {
-    font-family: "Mulish";
     font-size: 8px;
-    color: var(--darkGrey);
 }
 
 .error-wrapper {
@@ -238,7 +202,7 @@ code {
 }
 
 .success-wrapper {
-    color: "Teal";
+    color: var(--green);
     font-weight: 400;
     font-size: 0.75rem;
     letter-spacing: 0.03333em;
@@ -253,7 +217,5 @@ code {
     margin-top: 50px !important;
     padding: 60px 0 30px 0;
     border-bottom: 1px solid var(--lightGrey);
-    background: var(--lightgreywhite);
-    color: var(--darkGrey);
 }
 

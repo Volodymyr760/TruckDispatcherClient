@@ -223,7 +223,8 @@ export default function AdminBrokerForm({ broker, closeForm }: BrokerFormProps):
                     <Grid item>
                         <Controller name="parserName" control={control}
                             render={({ field }) =>
-                                <TextField  {...field} label="Parser Name" type="text" margin="normal" fullWidth
+                                <TextField  {...field} label="Parser Name" type="text" fullWidth
+                                    inputRef={input => input && input.focus()}
                                     sx={{"& .MuiOutlinedInput-root": muiTextFieldStyle, "& .MuiInputLabel-outlined": muiTextFieldStyle}}
                                     InputProps={{
                                         endAdornment: (
@@ -233,13 +234,14 @@ export default function AdminBrokerForm({ broker, closeForm }: BrokerFormProps):
                                                 </IconButton>
                                             </InputAdornment>),
                                     }}
-                                    error={Boolean(errors.parserName)} helperText={errors.parserName?.message} />}
+                                    error={Boolean(errors.parserName)} helperText={errors.parserName?.message} 
+                                />}
                         />
                     </Grid>
                     <Grid item>
                         <Controller name="name" control={control}
                             render={({ field }) =>
-                                <TextField  {...field} label="Name" type="text" margin="normal" fullWidth
+                                <TextField  {...field} label="Name" type="text" fullWidth
                                     sx={{"& .MuiOutlinedInput-root": muiTextFieldStyle, "& .MuiInputLabel-outlined": muiTextFieldStyle}}
                                     InputProps={{
                                         endAdornment: (
@@ -255,7 +257,7 @@ export default function AdminBrokerForm({ broker, closeForm }: BrokerFormProps):
                     <Grid item>
                         <Controller name="shortName" control={control}
                             render={({ field }) =>
-                                <TextField  {...field} label="Short Name" type="text" margin="normal" fullWidth
+                                <TextField  {...field} label="Short Name" type="text" fullWidth
                                     sx={{"& .MuiOutlinedInput-root": muiTextFieldStyle, "& .MuiInputLabel-outlined": muiTextFieldStyle}}
                                     InputProps={{
                                         endAdornment: (
@@ -271,7 +273,7 @@ export default function AdminBrokerForm({ broker, closeForm }: BrokerFormProps):
                     <Grid item>
                         <Controller name="email" control={control}
                             render={({ field }) =>
-                                <TextField  {...field} label="Email" type="email" margin="normal" fullWidth
+                                <TextField  {...field} label="Email" type="email" fullWidth
                                     sx={{"& .MuiOutlinedInput-root": muiTextFieldStyle, "& .MuiInputLabel-outlined": muiTextFieldStyle}}
                                     InputProps={{
                                         endAdornment: (
@@ -290,7 +292,7 @@ export default function AdminBrokerForm({ broker, closeForm }: BrokerFormProps):
                         <Controller name="phone" control={control}
                             render={({ field }) =>
                                 <>
-                                    <TextField {...field} label="Phone" type="tel" margin="normal" fullWidth
+                                    <TextField {...field} label="Phone" type="tel" fullWidth
                                         sx={{"& .MuiOutlinedInput-root": muiTextFieldStyle, "& .MuiInputLabel-outlined": muiTextFieldStyle}}
                                         InputProps={{
                                             endAdornment: (
@@ -314,7 +316,7 @@ export default function AdminBrokerForm({ broker, closeForm }: BrokerFormProps):
                     <Grid item>
                         <Controller name="dotNumber" control={control}
                             render={({ field }) =>
-                                <TextField  {...field} label="DOT" type="number" margin="normal" fullWidth
+                                <TextField  {...field} label="DOT" type="number" fullWidth
                                     sx={{"& .MuiOutlinedInput-root": muiTextFieldStyle, "& .MuiInputLabel-outlined": muiTextFieldStyle}}
                                     InputProps={{
                                         endAdornment: (
@@ -330,7 +332,7 @@ export default function AdminBrokerForm({ broker, closeForm }: BrokerFormProps):
                     <Grid item>
                         <Controller name="mcNumber" control={control}
                             render={({ field }) =>
-                                <TextField  {...field} label="MC" type="number" margin="normal" fullWidth
+                                <TextField  {...field} label="MC" type="number" fullWidth
                                     sx={{"& .MuiOutlinedInput-root": muiTextFieldStyle, "& .MuiInputLabel-outlined": muiTextFieldStyle}}
                                     InputProps={{
                                         endAdornment: (
@@ -347,7 +349,7 @@ export default function AdminBrokerForm({ broker, closeForm }: BrokerFormProps):
                         <Controller name="notes" control={control}
                             render={({ field }) =>
                                 <TextField {...field} label="Notes" fullWidth
-                                    margin="normal" multiline rows={4} variant='outlined' style={{ height: 'none' }}
+                                    multiline rows={4} variant='outlined' style={{ height: 'none' }}
                                     sx={{"& .MuiOutlinedInput-root": muiTextFieldStyle, "& .MuiInputLabel-outlined": muiTextFieldStyle}}
                                     error={Boolean(errors.notes)} helperText={errors.notes?.message} />} />
                     </Grid>

@@ -19,7 +19,7 @@ import './styles.css'
 export default function TruckPage(): JSX.Element {
     const { truckSearchParams, loading, error } = useTypedSelector(state => state.truck)
     const { auth } = useTypedSelector(state => state.auth)
-    const { searchTrucks, setTruckPage, setTruckSearchCriteria, setTruckEquipment, setTruckStatus, loadMoreTrucks } = useActions()
+    const { searchTrucks, setTruckError, setTruckPage, setTruckSearchCriteria, setTruckEquipment, setTruckStatus, loadMoreTrucks } = useActions()
     const [snackBarState, setSnackBarState] = useState<null | ISnackBarMessageState>(null)
     const [truck, setTruck] = useState<ITruck | null>(null)
 
@@ -27,8 +27,8 @@ export default function TruckPage(): JSX.Element {
     const truckStatuses: TruckStatus[] = [TruckStatus.All, TruckStatus.OnRoad, TruckStatus.Pending, TruckStatus.Repair]
 
     const сloseSnackbar = (event: React.SyntheticEvent | Event, reason?: string) => {
-        if (reason === 'clickaway') return
         setSnackBarState(null)
+        setTruckError(null)
     };
 
     useEffect(() => {
@@ -83,6 +83,10 @@ export default function TruckPage(): JSX.Element {
     const onEdit = (truck: null | ITruck) => setTruck(truck)
 
     const onCreate = () => {
+        if(new Date(auth.user.finishPayedPeriodDate) < new Date()){
+            setSnackBarState({ message: "Oops! Your paid period has expired.", severity: "warning" })
+            return
+        }
         const truck: ITruck = { id: null, name: '', licensePlate: '', equipment: Equipment.Van, costPerMile: 0.5,
             avatar: null, drivers: [], loads: [], userId: auth.user.id, truckStatus: TruckStatus.Pending }
         setTruck(truck)
@@ -91,14 +95,14 @@ export default function TruckPage(): JSX.Element {
     return (
         <Container maxWidth="lg" className='layout-container' >
             <Helmet>
-                <title>Truskdispatcher.com - Trucks</title>
-                <meta name="description" content="Advanced truck loads search engine for owner operators and dispatchers - Truskdispatcher.com" />
+                <title>Truckdispatcher.top - Trucks</title>
+                <meta name="description" content="Advanced truck loads search engine for owner operators and dispatchers - Truckdispatcher.top" />
             </Helmet>
             {/*Page Header */}
             <Grid container spacing={2} direction='row' justifyContent={'space-between'} alignItems={'center'}>
                 <Grid item sx={{ width: {xs: "100%", md: "33%" } }}>
                     <Tooltip title="Truck Name / License Plate" placement="bottom">
-                        <TextField label="Search" type="text" margin="normal" fullWidth
+                        <TextField label="Search" type="text" fullWidth
                             defaultValue={truckSearchParams.searchCriteria}
                             sx={{"& .MuiOutlinedInput-root": muiTextFieldStyle, "& .MuiInputLabel-outlined": muiTextFieldStyle}}
                             onChange={(event) => onSearchFilterChanged(event.target.value)}
@@ -172,6 +176,9 @@ export default function TruckPage(): JSX.Element {
             {truck && <TruckForm truck={truck} onClose={() => setTruck(null)} />}
             <Snackbar open={snackBarState !== null} autoHideDuration={4000} onClose={сloseSnackbar}>
                 <Alert severity={snackBarState?.severity}>{snackBarState?.message}</Alert>
+            </Snackbar>
+            <Snackbar open={error !== null} autoHideDuration={4000} onClose={сloseSnackbar}>
+                <Alert severity="error">{error}</Alert>
             </Snackbar>
         </Container>
     )

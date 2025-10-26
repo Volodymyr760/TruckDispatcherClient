@@ -3,77 +3,69 @@ import { ErrorStatus } from '../types/common/error'
 import { logoutAxios, refreshTokenAxios } from './user'
 import { RouteNames } from '../routing'
 
-export class AxiosMiddleware {
-    static boot(): void {
-        axios.defaults.baseURL = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_BASE_API_URL_PROD + "/api" :
-            process.env.REACT_APP_BASE_API_URL_DEV + "/api"
-        
-        // Request interceptor for API calls
-        axios.interceptors.request.use(
-            async config => {
-                const authFromLocalStorage = localStorage.getItem("auth");
-                if (authFromLocalStorage) {
-                    const keys = JSON.parse(authFromLocalStorage);
-                    config.headers = {
-                        'Authorization': `Bearer ${keys.tokens.accessToken}`,
-                        'Accept': 'application/json'
-                    }
-                }
-                return config;
-            },
-            error => {
-                Promise.reject(error)
-            });
+export function AxiosRoutesBoot() {
+    axios.defaults.baseURL = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_BASE_API_URL_PROD + "/api" :
+        process.env.REACT_APP_BASE_API_URL_DEV + "/api"
+}
 
-        // Response interceptor for API calls
-        axios.interceptors.response.use(function (response: AxiosResponse): AxiosResponse {
-            return response
+export function AxiosMiddleWareBoot(accessToken: string, refreshToken: string, email: string) {
+    let currentAccessToken = accessToken
+    // Request interceptor for API calls
+    axios.interceptors.request.use(
+        async config => {
+            config.headers = {
+                'Authorization': `Bearer ${currentAccessToken}`,
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+            return config;
         },
-            async function (error: AxiosError) {
-                if (!error.status) {
-                    try {
-                        if (error.response.status === ErrorStatus.Forbidden) {
-                            throw new Error("You are not allowed to this action.")
-                        }
-                        if (error.response.status === ErrorStatus.Unauthorized) {
-                            // Get existing tokens from localStorage and try to refresh
-                            const authFromLocalStorage = JSON.parse(localStorage.getItem("auth"));
-                            if (authFromLocalStorage) {
-                                const authModel = await refreshTokenAxios(authFromLocalStorage.tokens.accessToken, authFromLocalStorage.tokens.refreshToken)
-                                localStorage.setItem("auth", JSON.stringify(authModel))
-                                // current response contains all settings needed to retry request
-                                axios.defaults.headers.common['Authorization'] = 'Bearer ' + authModel.tokens.accessToken
-                                return axios(error.config)
-                            } else {
-                                window.location.href = process.env.PUBLIC_URL + RouteNames.LOGIN
-                            }
-                        }
-                    } catch (error) {
-                        if ({ error }.error.message === "Unable to refresh token.") {
-                            const auth = JSON.parse(localStorage.getItem("auth"))
-                            await logoutAxios(auth.user.email, auth.tokens.accessToken)
-                            localStorage.removeItem("auth");
-                            window.location.href = process.env.PUBLIC_URL + RouteNames.LOGIN
-                            throw new Error("Unable to refresh token, please Sign In.")
-                        }
+        error => {
+            Promise.reject(error)
+        });
+    // Response interceptor for API calls
+    axios.interceptors.response.use(function (response: AxiosResponse): AxiosResponse {
+        return response
+    },
+        async function (error: AxiosError) {
+            if (!error.status) {
+                try {
+                    if (error.response.status === ErrorStatus.Forbidden) {
+                        throw new Error("You are not allowed to this action.")
+                    }
+                    if (error.response.status === ErrorStatus.Unauthorized) {
+                        // Get existing tokens from auth store and try to refresh
+                        const authModel = await refreshTokenAxios(accessToken, refreshToken)
+                        // current response contains all settings needed to retry request
+                        currentAccessToken = authModel.tokens.accessToken
+                        axios.defaults.headers.common['Authorization'] = 'Bearer ' + currentAccessToken
+                        axios.defaults.headers.common['Content-Type'] = 'application/json'
+                        return axios(error.config)
+                    }
+                } catch (error) {
+                    if ({ error }.error.message === "Unable to refresh token.") {
+                        await logoutAxios(email)
+                        localStorage.removeItem("id");
+                        window.location.href = process.env.PUBLIC_URL + RouteNames.LOGIN
+                        throw new Error("Unable to refresh token, please Sign In.")
                     }
                 }
-                switch (error.status) {
-                    case ErrorStatus['Bad Request']:
-                        if (error.response) {
-                            if (error.response.data) {
-                                throw new Error(error.response.data['title'])
-                            }
-                            throw new Error('Network unavailable or server is not running.')
+            }
+            switch (error.status) {
+                case ErrorStatus['Bad Request']:
+                    if (error.response) {
+                        if (error.response.data) {
+                            throw new Error(error.response.data['title'])
                         }
-                        throw new Error("Bad Request Error");
-                    case ErrorStatus.Forbidden.toString():
-                        return
-                    case ErrorStatus['Not Found']:
-                        throw new Error(error.response.data['title'] || 'Not Found Error');
-                    default:
-                        throw new Error('Internal server error.')
-                }
-            });
-    }
+                        throw new Error('Network unavailable or server is not running.')
+                    }
+                    throw new Error("Bad Request Error");
+                case ErrorStatus.Forbidden.toString():
+                    return
+                case ErrorStatus['Not Found']:
+                    throw new Error(error.response.data['title'] || 'Not Found Error');
+                default:
+                    throw new Error('Internal server error.')
+            }
+        });
 }

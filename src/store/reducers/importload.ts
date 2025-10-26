@@ -1,15 +1,12 @@
-import { IAuth } from "../../types/auth"
 import { OrderType } from "../../types/common/orderType"
 import { ImportLoadAction, ImportLoadActionTypes, ImportLoadState, IImportLoad } from "../../types/importload"
-
-const auth: IAuth = JSON.parse(localStorage.getItem("auth"))
 
 const initialState: ImportLoadState = {
     importLoadSearchParams: {
         pageSize: 25,
         currentPage: 1,
         searchCriteria: '',
-        userId: auth ? auth.user.id : "",
+        userId: localStorage.getItem("id") || "",
         includeNavProperties: true,
         origin: null,
         destination: null,

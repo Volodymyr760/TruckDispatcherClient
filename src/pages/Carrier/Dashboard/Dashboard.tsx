@@ -36,8 +36,8 @@ export default function Dashboard() {
     return (
         <>
             <Helmet>
-                <title>Truskdispatcher.com - Dashboard</title>
-                <meta name="description" content="Advanced truck loads search engine for owner operators and dispatchers - Truskdispatcher.com" />
+                <title>Truckdispatcher.top - Dashboard</title>
+                <meta name="description" content="Advanced truck loads search engine for owner operators and dispatchers - Truckdispatcher.top" />
             </Helmet>
             <Grid container>
                 <Grid item xs={12} md={4} sx={{ padding: "0 !important", marginBottom: "15px" }}

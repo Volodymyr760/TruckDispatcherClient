@@ -1,37 +1,49 @@
-import React, { useState } from "react"
+import React, { ChangeEvent, useEffect, useState } from "react"
 import { Controller, useForm } from "react-hook-form"
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from "yup"
 import { useActions } from "../../../hooks/useActions"
 import { AppRoles } from "../../../types/common/appRoles"
+import { ICity } from "../../../types/city"
 import { ClientStatus, IClient } from "../../../types/client"
 import { ClientFormProps } from "./types"
 import { EMAIL_REG_EXP } from "../../../types/common/RegularExpressions"
+import { OrderType } from "../../../types/common/orderType"
 import { muiTextFieldStyle } from "../../../types/common/muiTextFieldStyle"
 import { ISnackBarMessageState } from "../../../types/common/snackBarMessageState"
-import { Alert, FormControl, FormControlLabel, FormLabel, Grid, IconButton, InputAdornment, 
-    Radio, RadioGroup, Snackbar, SwipeableDrawer, TextField } from "@mui/material"
+import { getCitiesAxios, getCityByFullnameAxios } from "../../../api/city"
+import { Alert, Autocomplete, FormControl, FormControlLabel, FormLabel, Grid, IconButton, InputAdornment, 
+    MenuItem, Radio, RadioGroup, Snackbar, SwipeableDrawer, TextField } from "@mui/material"
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import CircularProgress from '@mui/material/CircularProgress'
 import CloseIcon from '@mui/icons-material/Close'
 import MailOutlineIcon from '@mui/icons-material/MailOutline'
-import MuiButton from "../../../components/Button/MuiButton"
 import ErrorMessage from "../../../components/Messages/ErrorMessage"
+import MuiButton from "../../../components/Button/MuiButton"
 
 export default function ClientForm({ client, closeForm }: ClientFormProps): JSX.Element {
     const { createClient, updateClient } = useActions()
-    const [snackBarState, setSnackBarState] = useState<null | ISnackBarMessageState>(null)
     const [loadingState, setLoadingState] = useState<boolean>(false)
     const [errorState, setErrorState] = useState<null | string>(null)
+    const [snackBarState, setSnackBarState] = useState<null | ISnackBarMessageState>(null)
+
+    const [origins, setOrigins] = useState<ICity[]>([])
+    const [originValue, setOriginValue] = useState<ICity | null>(null)
+    const [originInputValue, setOriginInputValue] = useState<string>("")
 
     const [clientStatusState, setClientStatusState] = useState<ClientStatus>(client.clientStatus)
     const [clientAppRoleState, setClientAppRoleState] = useState<AppRoles>(client.appRoles)
 
-    const onSnackbarClose = (event: React.SyntheticEvent | Event, reason?: string) => {
-        if (reason === 'clickaway') return
-        setSnackBarState(null)
-    };
-
+    const fetchOriginCity = async (cityFullName: string) =>{
+        const city = await getCityByFullnameAxios(cityFullName);
+        setOriginValue(city)
+    }
+    
+    useEffect(() => {
+        if(client.city) fetchOriginCity(client.city)
+        // eslint-disable-next-line
+    }, [])
+    
     const onTClientStatusChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
         switch(event.target.value){
             case ClientStatus.Invited.toString():
@@ -70,12 +82,13 @@ export default function ClientForm({ client, closeForm }: ClientFormProps): JSX.
             .required('Required field.')
             .max(256, 'Email may not be greater than 256 characters.')
             .matches(EMAIL_REG_EXP, "Email is not valid and may not be greater than 256 characters."),
-        city: Yup.string()
+        dotNumber: Yup.string()
             .required('Required field.')
-            .max(50, 'City may not be greater than 50 characters.'),
-            dotNumber: Yup.string()
+            .max(20, 'dotNumber may not be greater than 20 characters.'),
+        timeZoneShift: Yup.number()
             .required('Required field.')
-            .max(20, 'dotNumber may not be greater than 20 characters.')
+            .min(-8, 'timeZoneShift may not be less than -8.')
+            .max(-4, 'timeZoneShift may not be greater than -4.')
     })
 
     const defaultValues: IClient = {
@@ -88,6 +101,7 @@ export default function ClientForm({ client, closeForm }: ClientFormProps): JSX.
         dotNumber: client.dotNumber,
         createdAt: client.createdAt,
         invitedAt: client.invitedAt,
+        timeZoneShift: client.timeZoneShift,
         notes: client.notes
     }
 
@@ -96,7 +110,32 @@ export default function ClientForm({ client, closeForm }: ClientFormProps): JSX.
         defaultValues
     })
 
+    const onSnackbarClose = (event: React.SyntheticEvent | Event, reason?: string) => setSnackBarState(null)
+
+    const onOriginFilterChanged = async (event, city) => setOriginValue(city)
+
+    const searchOriginCities = async (event: ChangeEvent<HTMLInputElement>) => {
+        const result = await getCitiesAxios({
+            pageSize: 20,
+            currentPage: 1,
+            searchCriteria: event.target.value,
+            userId: "",
+            sortField: "FullName",
+            order: OrderType.Ascending,
+            includeNavProperties: false,
+            itemList: [],
+            pageCount: 0,
+            totalItemsCount: 0
+        });
+        setOrigins(result.itemList)
+    }
+    
     const onSubmit = async (client: IClient): Promise<void> => {
+        if(!originValue) {
+            setSnackBarState({ message: "Please choose client's city.", severity: "error" })
+            return
+        }
+        client.city = originValue.fullName
         client.invitedAt = clientStatusState === ClientStatus.Invited ? new Date() : null
         client.clientStatus = clientStatusState
         client.appRoles = clientAppRoleState
@@ -132,11 +171,12 @@ export default function ClientForm({ client, closeForm }: ClientFormProps): JSX.
             />
             <form onSubmit={handleSubmit(onSubmit)} style={{ maxWidth: '360px' }}>
                 <Grid container direction={'column'} justifyContent="center" spacing={2} sx={{ padding: '20px' }}>
+                    {/* Name */}
                     <Grid item>
                         <Controller name="name" control={control}
                             render={({ field }) =>
-                                <TextField  {...field} label="Name" type="text" margin="normal" fullWidth
-                                    sx={{"& .MuiOutlinedInput-root": muiTextFieldStyle, "& .MuiInputLabel-outlined": muiTextFieldStyle}}
+                                <TextField  {...field} label="Name" type="text" fullWidth 
+                                    sx={{marginTop: 3, "& .MuiOutlinedInput-root": muiTextFieldStyle, "& .MuiInputLabel-outlined": muiTextFieldStyle}}
                                     InputProps={{
                                         endAdornment: (
                                             <InputAdornment position="end">
@@ -148,10 +188,28 @@ export default function ClientForm({ client, closeForm }: ClientFormProps): JSX.
                                     error={Boolean(errors.name)} helperText={errors.name?.message} />}
                         />
                     </Grid>
+                    {/* Dot Number */}
+                    <Grid item>
+                        <Controller name="dotNumber" control={control}
+                            render={({ field }) =>
+                                <TextField  {...field} label="Dot Number" type="number" fullWidth
+                                    sx={{"& .MuiOutlinedInput-root": muiTextFieldStyle, "& .MuiInputLabel-outlined": muiTextFieldStyle}}
+                                    InputProps={{
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                <IconButton edge="end" >
+                                                    <AccountCircleIcon />
+                                                </IconButton>
+                                            </InputAdornment>),
+                                    }}
+                                    error={Boolean(errors.dotNumber)} helperText={errors.dotNumber?.message} />}
+                        />
+                    </Grid>
+                    {/* Email */}
                     <Grid item>
                         <Controller name="email" control={control}
                             render={({ field }) =>
-                                <TextField  {...field} label="Email" type="email" margin="normal" fullWidth
+                                <TextField  {...field} label="Email" type="email" fullWidth
                                     sx={{"& .MuiOutlinedInput-root": muiTextFieldStyle, "& .MuiInputLabel-outlined": muiTextFieldStyle}}
                                     InputProps={{
                                         endAdornment: (
@@ -166,24 +224,29 @@ export default function ClientForm({ client, closeForm }: ClientFormProps): JSX.
                             }
                         />
                     </Grid>
+                    {/* City */}
                     <Grid item>
-                        <Controller name="city" control={control}
-                            render={({ field }) =>
-                                <TextField  {...field} label="City" type="text" margin="normal" fullWidth
+                        <Autocomplete disablePortal multiple={false} 
+                            options={origins} value={originValue} inputValue={originInputValue}
+                            onInputChange={(event, newInputValue) => { setOriginInputValue(newInputValue) }}
+                            onChange={onOriginFilterChanged}
+                            getOptionLabel={(option) => option['fullName']}
+                            isOptionEqualToValue={(option, value) => option.value === value.value}
+                            renderInput={(params) => 
+                                <TextField {...params} label="City" 
                                     sx={{"& .MuiOutlinedInput-root": muiTextFieldStyle, "& .MuiInputLabel-outlined": muiTextFieldStyle}}
-                                    InputProps={{
-                                        endAdornment: (
-                                            <InputAdornment position="end">
-                                                <IconButton edge="end" >
-                                                    <AccountCircleIcon />
-                                                </IconButton>
-                                            </InputAdornment>),
-                                    }}
-                                    error={Boolean(errors.city)} helperText={errors.city?.message} />}
+                                    onChange={searchOriginCities}
+                                />}
+                            renderOption={(props, option) => (
+                                <MenuItem {...props} key={option.id} value={option.name}
+                                    sx={{ justifyContent: "space-between", fontSize: "16px", fontFamily: "Mulish" }}>
+                                    {origins.length > 0 ? option.fullName : ''}
+                                </MenuItem> )}
                         />
                     </Grid>
+                    {/* Client Status */}
                     <Grid item>
-                        <FormControl sx={{ margin: "24px 0", width: "100%" }} component="fieldset" variant="standard"  >
+                        <FormControl component="fieldset" variant="standard"  >
                             <FormLabel component="legend">Client Status:</FormLabel>
                             <Controller rules={{ required: true }} control={control} name="clientStatus"
                                 render={({ field }) => (
@@ -205,8 +268,9 @@ export default function ClientForm({ client, closeForm }: ClientFormProps): JSX.
                             />
                         </FormControl>
                     </Grid>
+                    {/* Client Role */}
                     <Grid item>
-                        <FormControl sx={{ margin: "24px 0", width: "100%" }} component="fieldset" variant="standard"  >
+                        <FormControl component="fieldset" variant="standard"  >
                             <FormLabel component="legend">Client Role:</FormLabel>
                             <Controller rules={{ required: true }} control={control} name="appRoles"
                                 render={({ field }) => (
@@ -225,32 +289,27 @@ export default function ClientForm({ client, closeForm }: ClientFormProps): JSX.
                             />
                         </FormControl>
                     </Grid>
+                    {/* Time Zone Shift */}
                     <Grid item>
-                        <Controller name="dotNumber" control={control}
+                        <Controller name="timeZoneShift" control={control}
                             render={({ field }) =>
-                                <TextField  {...field} label="Dot Number" type="number" margin="normal" fullWidth
-                                    sx={{"& .MuiOutlinedInput-root": muiTextFieldStyle, "& .MuiInputLabel-outlined": muiTextFieldStyle}}
-                                    InputProps={{
-                                        endAdornment: (
-                                            <InputAdornment position="end">
-                                                <IconButton edge="end" >
-                                                    <AccountCircleIcon />
-                                                </IconButton>
-                                            </InputAdornment>),
-                                    }}
-                                    error={Boolean(errors.dotNumber)} helperText={errors.dotNumber?.message} />}
-                        />
+                                <TextField  {...field} label="Time Zone Shift" type="number" fullWidth
+                                    sx={{margin: 0, "& .MuiOutlinedInput-root": muiTextFieldStyle, "& .MuiInputLabel-outlined": muiTextFieldStyle}}
+                                    inputProps={{min: -8, max: -4, step: 1}}
+                                    error={Boolean(errors.timeZoneShift)} helperText={errors.timeZoneShift?.message} />} />
                     </Grid>
+                    {/* Notes */}
                     <Grid item>
                         <Controller name="notes" control={control}
                             render={({ field }) =>
-                                <TextField {...field} label="Notes" fullWidth
-                                    margin="normal" multiline rows={4} variant='outlined' style={{ height: 'none' }}
+                                <TextField {...field} label="Notes" fullWidth 
+                                    multiline rows={4} variant='outlined' style={{ height: 'none' }}
                                     sx={{"& .MuiOutlinedInput-root": muiTextFieldStyle, "& .MuiInputLabel-outlined": muiTextFieldStyle}}
                                     error={Boolean(errors.notes)} helperText={errors.notes?.message} />} />
                     </Grid>
                     {errorState && <ErrorMessage appearance="small" >{errorState}</ErrorMessage>}
                 </Grid>
+                {/* Buttons */}
                 <Grid container direction="row" justifyContent="space-around" alignItems="center" mb={2}>
                     <MuiButton variant='contained' onClickHandler={onCancelHandler}>
                         <span className="text-14" style={{color: 'var(--lightgreywhite)'}}>Cancel</span>
@@ -260,9 +319,9 @@ export default function ClientForm({ client, closeForm }: ClientFormProps): JSX.
                     </MuiButton>                    
                 </Grid>
             </form>
-            <Snackbar open={snackBarState !== null} autoHideDuration={4000} onClose={onSnackbarClose}>
-                <Alert severity={snackBarState?.severity}>{snackBarState?.message}</Alert>
-            </Snackbar>
+            <Snackbar open={snackBarState !== null} autoHideDuration={4000} onClose={onSnackbarClose} >
+                <Alert className="text-16" severity={snackBarState?.severity}>{snackBarState?.message}</Alert>
+            </Snackbar>            
         </SwipeableDrawer>
     )
 }

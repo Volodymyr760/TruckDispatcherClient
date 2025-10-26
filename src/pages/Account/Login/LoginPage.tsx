@@ -10,8 +10,8 @@ export default function LoginPage(): JSX.Element {
     return (
         <Container maxWidth="lg" className='layout-container' >
             <Helmet>
-                <title>TruckDispatcher.com - Sign In</title>
-                <meta name="description" content="Advanced truck loads search engine for owner operators and dispatchers - Truskdispatcher.com" />
+                <title>TruckDispatcher.top - Sign In</title>
+                <meta name="description" content="Advanced truck loads search engine for owner operators and dispatchers - Truckdispatcher.top" />
             </Helmet>
             <PageHeader title="Sign In" />
             <Grid container direction="column" alignItems="center">

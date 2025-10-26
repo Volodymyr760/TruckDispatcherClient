@@ -197,6 +197,7 @@ export default function ProfileForm(): JSX.Element {
                     <Controller name="companyName" control={control}
                         render={({ field }) =>
                             <TextField  {...field} label="Company Name" type="text" margin="normal" fullWidth
+                                inputRef={input => input && input.focus()}
                                 sx={{"& .MuiOutlinedInput-root": muiTextFieldStyle, "& .MuiInputLabel-outlined": muiTextFieldStyle}}
                                 InputProps={{
                                     endAdornment: (

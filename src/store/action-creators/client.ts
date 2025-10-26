@@ -1,5 +1,5 @@
 import { Dispatch } from "redux"
-import { getClientsAxios, deleteClientAxios, updateClientAxios, createClientAxios } from "../../api/client"
+import { getClientsAxios, updateClientAxios, createClientAxios } from "../../api/client"
 import { OrderType } from "../../types/common/orderType"
 import { IClient, ClientSearchParams, ClientAction, ClientActionTypes, ClientStatus } from "../../types/client"
 import { AppRoles } from "../../types/common/appRoles"
@@ -100,11 +100,21 @@ export const updateClient = (client: IClient) => {
     }
 }
 
+export const inviteClientCarrier = (client: IClient) => {
+    return async (dispatch: Dispatch<ClientAction>) => {
+        try {
+            dispatch({ type: ClientActionTypes.SET_CLIENT_ERROR, payload: null })
+            dispatch({ type: ClientActionTypes.UPDATE_CLIENT, payload: client })
+        } catch (error) {
+            dispatch({ type: ClientActionTypes.SET_CLIENT_ERROR, payload: error.message || "Error of inviting the client." })
+        }
+    }
+}
+
 export const removeClient = (id: string) => {
     return async (dispatch: Dispatch<ClientAction>) => {
         try {
             dispatch({ type: ClientActionTypes.SET_CLIENT_ERROR, payload: null })
-            await deleteClientAxios(id)
             dispatch({ type: ClientActionTypes.REMOVE_CLIENT, payload: id })
         } catch (error) {
             dispatch({ type: ClientActionTypes.SET_CLIENT_ERROR, payload: error.message || "Error while removing the client." })

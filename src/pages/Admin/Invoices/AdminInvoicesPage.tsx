@@ -59,8 +59,8 @@ export default function AdminInvoicesPage() {
     return (
         <Container maxWidth="lg" className={loading ? 'layout-container loading-opacity' : 'layout-container'} >
             <Helmet>
-                <title>Truskdispatcher.com - Admin Invoices</title>
-                <meta name="description" content="Advanced truck loads search engine for owner operators and dispatchers - Truskdispatcher.com" />
+                <title>Truckdispatcher.top - Admin Invoices</title>
+                <meta name="description" content="Advanced truck loads search engine for owner operators and dispatchers - Truckdispatcher.top" />
             </Helmet>
             {/* Page Header */}
             <Grid container spacing={2} direction='row' justifyContent={'space-between'} alignItems={'center'}>

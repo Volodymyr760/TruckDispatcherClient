@@ -29,11 +29,12 @@ export default function ResetPasswordForm(): JSX.Element {
             .matches(EMAIL_REG_EXP, "Required field Email is not valid and may not be greater than 256 characters."),
         password: Yup.string()
             .required('Required field.')
+            .min(7, 'Must contain at least one uppercase, one symbol and at least 7 or more characters')
             .max(100, 'Password may not be greater than 100 characters.')
             .matches(PASSWORD_REG_EXP, "Password is not valid. Must contain at least one uppercase, one symbol and at least 7 or more characters."),
         confirmPassword: Yup.string()
             .required('Required field.')
-            .matches(PASSWORD_REG_EXP, "Confirmation Password is not valid. Should match with Password.")
+            .matches(PASSWORD_REG_EXP, "Confirmation is not valid. Should match with Password.")
     })
 
     const defaultValues: IResetPasswordDto = { code: searchParams.get("code") || '', email: searchParams.get("email"), password: '', confirmPassword: '' }
@@ -94,7 +95,9 @@ export default function ResetPasswordForm(): JSX.Element {
                                         </InputAdornment>
                                     ),
                                 }}
-                                error={Boolean(errors.password)} helperText={errors.password?.message} />}
+                                error={Boolean(errors.password)} 
+                                helperText="Must contain at least one uppercase, one symbol and at least 7 or more characters"
+                            />}
                     />
                 </Grid>
                 <Grid item xs={12} md={6}>

@@ -1,5 +1,5 @@
 import { Dispatch } from "redux"
-import { getLoadsAxios, getLoadByIdAxios, createLoadAxios, deleteLoadAxios, updateLoadAxios } from "../../api/load"
+import { getLoadsAxios, getLoadByIdAxios, createLoadAxios, updateLoadAxios } from "../../api/load"
 import { OrderType } from "../../types/common/orderType"
 import { ILoad, ILoadSearchParams, LoadAction, LoadActionTypes, LoadStatus } from "../../types/load"
 import { clonedObject } from "../../hooks/clonedObject"
@@ -138,7 +138,6 @@ export const removeLoad = (id: string) => {
         try {
             dispatch({ type: LoadActionTypes.SET_LOAD_ERROR, payload: null })
             dispatch({ type: LoadActionTypes.REMOVE_LOAD, payload: id })
-            await deleteLoadAxios(id);
         } catch (error) {
             dispatch({ type: LoadActionTypes.SET_LOAD_ERROR, payload: error.message || "Error while removing the load." })
         }

@@ -38,6 +38,7 @@ export default function RegisterForm(): JSX.Element {
             .matches(EMAIL_REG_EXP, "Email is not valid and may not be greater than 256 characters."),
         password: Yup.string()
             .required('Required field.')
+            .min(7, 'Must contain at least one uppercase, one symbol and at least 7 or more characters')
             .max(100, 'Password may not be greater than 100 characters.')
             .matches(PASSWORD_REG_EXP, "Password is not valid. Must contain at least one uppercase, one symbol and at least 7 or more characters."),
         confirmPassword: Yup.string()
@@ -86,6 +87,7 @@ export default function RegisterForm(): JSX.Element {
                     <Controller name="companyName" control={control}
                         render={({ field }) =>
                             <TextField  {...field} label="Company name" type="text" margin="normal" fullWidth
+                                inputRef={input => input && input.focus()}
                                 sx={{"& .MuiOutlinedInput-root": muiTextFieldStyle, "& .MuiInputLabel-outlined": muiTextFieldStyle}}
                                 InputProps={{
                                     endAdornment: (
@@ -179,7 +181,8 @@ export default function RegisterForm(): JSX.Element {
                                         </InputAdornment>
                                     ),
                                 }}
-                                error={Boolean(errors.password)} helperText={errors.password?.message} />}
+                                error={Boolean(errors.password)} 
+                                helperText="Must contain at least one uppercase, one symbol and at least 7 or more characters" />}
                     />
                 </Grid>
                 <Grid item xs={12} md={6}>

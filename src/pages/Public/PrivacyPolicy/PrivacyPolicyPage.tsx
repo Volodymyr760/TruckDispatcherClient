@@ -8,15 +8,15 @@ export default function PrivacyPolicyPage() {
     return (
         <Container maxWidth="lg">
             <Helmet>
-                <title>TruckDispatcher.com - Privacy Policy</title>
-                <meta name="description" content="Forms for remote work and control with customers, business units and personnel, create your form with questions, add images, answer options and your comments - TruckDispatcher.com" />
+                <title>TruckDispatcher.top - Privacy Policy</title>
+                <meta name="description" content="Forms for remote work and control with customers, business units and personnel, create your form with questions, add images, answer options and your comments - TruckDispatcher.top" />
             </Helmet>
             <PageHeader title="Privacy Policy" />
             <p className="text-14">
                 Last Updated: 12 January 2024
             </p>
             <p className="text-16">
-                This page informs you of TruckDispatcher.com (the "Service") policies regarding the collection, use, and disclosure of personal data
+                This page informs you of TruckDispatcher.top (the "Service") policies regarding the collection, use, and disclosure of personal data
                 when you use our Service and the choices you have associated with that data.
             </p>
             <p className="pt2">
@@ -104,7 +104,7 @@ export default function PrivacyPolicyPage() {
                 Reporting Inaccuracies or Inappropriate Content
             </p>
             <p className="text-16">
-                Users are encouraged to report any inaccuracies or inappropriate content by contacting support@truckdispatcher.com.
+                Users are encouraged to report any inaccuracies or inappropriate content by contacting support@truckdispatcher.top.
             </p>
             <p className="pt2">
                 Changes to this Warning

@@ -8,15 +8,15 @@ export default function TermsConditionsPage() {
     return (
         <Container maxWidth="lg">
             <Helmet>
-                <title>TruckDispatcher.com - Terms and conditions</title>
-                <meta name="description" content="Forms for remote work and control with customers, business units and personnel, create your form with questions, add images, answer options and your comments - TruckDispatcher.com" />
+                <title>TruckDispatcher.top - Terms and conditions</title>
+                <meta name="description" content="Forms for remote work and control with customers, business units and personnel, create your form with questions, add images, answer options and your comments - TruckDispatcher.top" />
             </Helmet>
             <PageHeader title="Terms and Conditions" />
             <p className="text-14">
                 Last Updated: 12 January 2024
             </p>
             <p className="text-16">
-                Welcome to TruckDispatcher.com (the "Service"). Please read these Terms and Conditions carefully before using the Service.
+                Welcome to TruckDispatcher.top (the "Service"). Please read these Terms and Conditions carefully before using the Service.
             </p>
             <p className="text-16">
                 By accessing or using the Service, you agree to comply with and be bound by these Terms and Conditions.
@@ -116,7 +116,7 @@ export default function TermsConditionsPage() {
             </p>
             <p className="text-16">
                 If you have any questions about these Terms and Conditions, please contact us
-                at <a href="mailto:support@truckdispatcher.com">support@truckdispatcher.com</a>.
+                at <a href="mailto:support@truckdispatcher.top">support@truckdispatcher.top</a>.
             </p>
         </Container>
     )

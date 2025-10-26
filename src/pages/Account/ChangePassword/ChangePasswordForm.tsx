@@ -40,6 +40,7 @@ export default function ChangePasswordForm(): JSX.Element {
             .matches(PASSWORD_REG_EXP, "Password is not valid. Must contain at least one uppercase, one symbol and at least 7 or more characters."),
         newPassword: Yup.string()
             .required('Required field.')
+            .min(7, 'Must contain at least one uppercase, one symbol and at least 7 or more characters')
             .max(100, 'Password may not be greater than 100 characters.')
             .matches(PASSWORD_REG_EXP, "New Password is not valid. Must contain at least one uppercase, one symbol and at least 7 or more characters."),
         confirmNewPassword: Yup.string()
@@ -95,6 +96,7 @@ export default function ChangePasswordForm(): JSX.Element {
                         render={({ field }) =>
                             <TextField  {...field} label="Old Password" type={showPassword ? 'text' : 'password'}
                                 margin="normal" fullWidth
+                                inputRef={input => input && input.focus()}
                                 sx={{"& .MuiOutlinedInput-root": muiTextFieldStyle, "& .MuiInputLabel-outlined": muiTextFieldStyle}}
                                 InputProps={{
                                     endAdornment: (
@@ -131,7 +133,9 @@ export default function ChangePasswordForm(): JSX.Element {
                                         </InputAdornment>
                                     ),
                                 }}
-                                error={Boolean(errors.newPassword)} helperText={errors.newPassword?.message} />}
+                                error={Boolean(errors.newPassword)} 
+                                helperText="Must contain at least one uppercase, one symbol and at least 7 or more characters" 
+                            />}
                     />
                 </Grid>
                 <Grid item xs={12} md={6}>

@@ -1,17 +1,14 @@
-import { IAuth } from "../../types/auth"
 import { BrokerLoadAction, BrokerLoadActionTypes, BrokerLoadState } from "../../types/brokerLoad"
 import { Equipment } from "../../types/common/equipment"
 import { IImportLoad } from "../../types/importload"
 import { OrderType } from "../../types/common/orderType"
-
-const auth: IAuth = JSON.parse(localStorage.getItem("auth"))
 
 const initialState: BrokerLoadState = {
     brokerLoadSearchParams: {
         pageSize: 10,
         currentPage: 1,
         searchCriteria: "",
-        userId: auth ? auth.user.id : "",
+        userId: localStorage.getItem("id") || "",
         sortField: "Pickup",
         order: OrderType.Descending,
         includeNavProperties: false,

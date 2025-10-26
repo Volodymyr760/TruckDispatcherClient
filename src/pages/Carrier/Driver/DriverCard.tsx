@@ -16,7 +16,7 @@ import AppDeleteConfirmDialog from '../../../components/AppDeleteConfirmDialog/A
 
 export default function DriverCard({ driver, onEdit }: DriverCardProps): JSX.Element {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-    const { removeDriver } = useActions()
+    const { removeDriver, setDriverError } = useActions()
     const [loadingState, setLoadingState] = useState<boolean>(false)
     const [confirmDialogOpen, setConfirmDialogOpen] = useState<boolean>(false)
 
@@ -24,10 +24,15 @@ export default function DriverCard({ driver, onEdit }: DriverCardProps): JSX.Ele
     const handleClose = () => setAnchorEl(null)
 
     const onDeleteDriver = async () => {
-        setLoadingState(true)
-        await deleteDriverAxios(driver.id)
-        removeDriver(driver.id)
-        setLoadingState(false)
+        try {
+            setLoadingState(true)
+            await deleteDriverAxios(driver.id)
+            removeDriver(driver.id)
+        } catch (error) {
+            setDriverError(error.message || "Error while removing the driver.")
+        } finally {
+            setLoadingState(false)
+        }
     }
 
     return (

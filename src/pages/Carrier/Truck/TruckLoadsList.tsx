@@ -53,6 +53,35 @@ export default function TruckLoadsList({ truck, onClose }: TruckFormProps) {
         setTrucksLoads(trucksLoads.filter(l => l.id !== load.id)) // remove from fetched loads
     }
 
+    const handleDownload = () => {
+        // Define your data
+        const data = trucksLoads;
+
+        // Convert data to CSV format
+        const csvRows = [];
+        const headers = Object.keys(data[0]);
+        csvRows.push(headers.join(",")); // Add headers
+
+        data.forEach((row) => {
+        const values = headers.map((header) => `"${row[header]}"`);
+        csvRows.push(values.join(","));
+        });
+
+        const csvContent = csvRows.join("\n");
+
+        // Create a Blob and download the file
+        const blob = new Blob([csvContent], { type: "text/csv" });
+        const url = URL.createObjectURL(blob);
+
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "data.csv";
+        link.click();
+
+        // Clean up
+        URL.revokeObjectURL(url);
+    };
+
     return (
         <Modal open={true} onClose={onClose}>
             <Box sx={style}>
@@ -83,7 +112,7 @@ export default function TruckLoadsList({ truck, onClose }: TruckFormProps) {
                         }
                     </Grid>
                     <Grid item sx={{ textAlign: 'right' }}>
-                        <MuiButton variant='contained' onClickHandler={() => alert("Not implemented yet.")}>
+                        <MuiButton variant='contained' onClickHandler={handleDownload}>
                             <span className="text-14" style={{color: 'var(--lightgreywhite)'}}>Save as CSV</span>
                         </MuiButton>&nbsp;&nbsp;
                         <MuiButton variant='contained' onClickHandler={onClose}>

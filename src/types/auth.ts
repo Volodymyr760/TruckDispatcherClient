@@ -114,9 +114,6 @@ interface UpdateAuthUserAction {
     payload: IUser
 }
 
-export type AuthAction = Login |
-    Logout |
-    SetErrorAction |
-    SetLoadingAction | 
-    SetUserAvatarAction | SetUserLogoAction | 
+export type AuthAction = Login | Logout |
+    SetErrorAction | SetLoadingAction | SetUserAvatarAction | SetUserLogoAction |
     UpdateAuthUserAction

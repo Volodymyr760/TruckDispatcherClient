@@ -221,6 +221,7 @@ export default function TruckForm({ truck, onClose }: TruckFormProps): JSX.Eleme
                         <Controller name="name" control={control}
                             render={({ field }) =>
                                 <TextField  {...field} label="Name" type="text" fullWidth
+                                    inputRef={input => input && input.focus()}
                                     sx={{margin: 0, "& .MuiOutlinedInput-root": muiTextFieldStyle, "& .MuiInputLabel-outlined": muiTextFieldStyle}}
                                     InputProps={{
                                         endAdornment: (

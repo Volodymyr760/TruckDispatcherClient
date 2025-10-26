@@ -44,10 +44,10 @@ export default function HelpBar() {
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
                     <Grid container direction="row" justifyContent="space-between" alignItems="center" gap="10px">
-                        <a href="mailto:support@truckdispatcher.com">
+                        <a href="mailto:support@truckdispatcher.top">
                             <ThumbUpIcon sx={{ color: "var(--darkGrey)" }} />
                         </a>
-                        <a href="mailto:support@truckdispatcher.com" 
+                        <a href="mailto:support@truckdispatcher.top" 
                         style={{ fontSize: "0.95rem", textDecoration: "none", color: "var(--darkGrey)" }}>
                             <span className='text-16'>Suggest a feature</span>
                         </a>

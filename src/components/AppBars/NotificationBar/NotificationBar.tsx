@@ -48,7 +48,7 @@ export default function NotificationBar() {
             <Tooltip title="Notifications">
                 <IconButton color="inherit" onClick={handleOpen}>
                     <Badge badgeContent={notificationSearchParams.itemList.filter(n => n.isRead === false).length || 0} color="error">
-                        <NotificationsIcon sx={{ fill: "var(--darkGrey)" }} />
+                        <NotificationsIcon />
                     </Badge>
                 </IconButton>
             </Tooltip>
@@ -61,7 +61,7 @@ export default function NotificationBar() {
                     {
                         notificationSearchParams.itemList.length > 0 ?
                             notificationSearchParams.itemList.map(n =>
-                                <Grid item key={n.id} p="5px" sx={{ '&:hover': { backgroundColor: "#e0e0e0" } }}>
+                                <Grid item key={n.id} p="5px">
                                     <Grid container direction="row" justifyContent="space-between" alignItems="flex-start" >
                                         {/* SenderAvatar */}
                                         <Grid item width="50px" p="2px">

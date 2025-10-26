@@ -49,7 +49,7 @@ export default function UsersPage(): JSX.Element {
     useEffect(() => {
         searchUsers(userSearchParams)
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [userSearchParams.searchCriteria, userSearchParams.currentPage, userSearchParams.sortField, userSearchParams.order]);
+    }, [userSearchParams.searchCriteria, userSearchParams.sortField, userSearchParams.order]);
 
     const onAccountstatusFilterChanged = async (event: SelectChangeEvent<AccountStatus>) => {
         setUserPage(1)
@@ -65,8 +65,8 @@ export default function UsersPage(): JSX.Element {
     return (
         <>
             <Helmet>
-                <title>Truskdispatcher.com - Users</title>
-                <meta name="description" content="Advanced truck loads search engine for owner operators and dispatchers - Truskdispatcher.com" />
+                <title>Truckdispatcher.top - Users</title>
+                <meta name="description" content="Advanced truck loads search engine for owner operators and dispatchers - Truckdispatcher.top" />
             </Helmet>
             {
                 user ? <ManageUser user={user} onClose={() => setUser(null)} /> :
