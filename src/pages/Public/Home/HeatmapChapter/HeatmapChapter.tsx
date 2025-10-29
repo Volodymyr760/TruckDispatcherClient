@@ -4,11 +4,14 @@ import { IHeatmap, IHeatmapState } from '../../../../types/heatmap'
 import { OrderType } from '../../../../types/common/orderType'
 import { getHeatmapAxios } from '../../../../api/heatmap'
 import { Grid } from '@mui/material'
+import HeatmapCardTitle from './HeatmapCardTitle'
+import HeatmapCardRow from './HeatmapCardRow'
+import HeatmapStateRow from './HeatmapStateRow'
 import './styles.css'
 
 const defaultHeatmapState: IHeatmapState = {
-    id: "defauitid",
-    heatmapId: "defauitheatmapId",
+    id: "defaultid",
+    heatmapId: "defaultheatmapId",
     state: "AL",
     pickupsAmount: 0,
     sumPickupRates: 0,
@@ -19,13 +22,13 @@ const defaultHeatmapState: IHeatmapState = {
     ranq: 0
 }
 
-export default function HeatmapChapter() {
+export default function HeatmapChapter(): JSX.Element {
     const [todayHeatmap, setTodayHeatmap] = useState<IHeatmap>(null)
     const [tomorrowHeatmap, setTomorrowHeatmap] = useState<IHeatmap>(null)
     const [currentTodayHeatmapState, setCurrentTodayHeatmapState] = useState<IHeatmapState>(defaultHeatmapState)
     const [currentTomorrowHeatmapState, setCurrentTomorrowHeatmapState] = useState<IHeatmapState>(defaultHeatmapState)
-    
-    const loadHeatmap = async () =>{
+
+    const loadHeatmap = async () => {
         let heatmaSearchResult = {
             pageSize: 25,
             currentPage: 1,
@@ -52,12 +55,12 @@ export default function HeatmapChapter() {
         setCurrentTomorrowHeatmapState(tomorrowResult.itemList[0].heatmapStates[0])
     };
 
-    useEffect(() => { 
+    useEffect(() => {
         loadHeatmap()
         // eslint-disable-next-line
     }, [])
 
-    function assignStateColorOnMap (heatmapStates: IHeatmapState[]){
+    function assignStateColorOnMap(heatmapStates: IHeatmapState[]) {
         heatmapStates.forEach(hms => {
             const stateOnMap = document.getElementById(hms.state)
             stateOnMap.style.fill = setColor(hms.ranq)
@@ -66,10 +69,10 @@ export default function HeatmapChapter() {
 
     const colorOfTodayHeatmapState: string = setColor(currentTodayHeatmapState.ranq)
     const colorOfTomorrowHeatmapState: string = setColor(currentTomorrowHeatmapState.ranq)
-    
+
     function setColor(ranq: number): string {
         let colorVariableFromCss: string
-        switch(ranq){
+        switch (ranq) {
             case 1:
                 colorVariableFromCss = "var(--darkBlue)"
                 break
@@ -81,7 +84,7 @@ export default function HeatmapChapter() {
                 break
             case 4:
                 colorVariableFromCss = "var(--orange)"
-                break                                 
+                break
             default:
                 colorVariableFromCss = "var(--red)"
                 break
@@ -89,13 +92,13 @@ export default function HeatmapChapter() {
 
         return colorVariableFromCss
     }
-    
+
     function chooseState(text: string) {
-        if(todayHeatmap !== null) {
+        if (todayHeatmap !== null) {
             const choosedHeatmapState: IHeatmapState = todayHeatmap.heatmapStates.find(hms => hms.state === text)
             if (choosedHeatmapState !== undefined) setCurrentTodayHeatmapState(choosedHeatmapState)
         }
-        if(tomorrowHeatmap !== null) {
+        if (tomorrowHeatmap !== null) {
             const choosedHeatmapState: IHeatmapState = tomorrowHeatmap.heatmapStates.find(hms => hms.state === text)
             if (choosedHeatmapState !== undefined) setCurrentTomorrowHeatmapState(choosedHeatmapState)
         }
@@ -105,8 +108,8 @@ export default function HeatmapChapter() {
         <Grid container alignItems="center">
             <Grid item xs={12} md={6}>
                 <svg id="mapsection" width="1000px" height="589px" version="1.1" viewBox="0 0 1000 589" >
-                    <path id="MA" onClick={() => chooseState('MA')} d="m 956.31178,153.05085 -0.29118,-0.19412 0,0.29119 0.29118,-0.0971 z m -2.91189,-2.6207 0.67944,-0.29119 0,-0.38825 -0.67944,0.67944 z m 12.03583,-7.57092 -0.0971,-1.35889 -0.19412,-0.7765 0.29119,2.13539 z m -42.41659,-9.9975 -0.67944,0.29119 -5.5326,1.65007 -1.94126,0.67944 -2.23245,0.67944 -0.7765,0.29119 0,0.29119 0.29118,5.04728 0.29119,4.65903 0.29119,4.27078 0.48532,0.29119 1.74714,-0.48532 7.86211,-2.32951 0.19412,0.48531 13.97709,-5.33847 0.0971,0.19413 1.26182,-0.48532 4.4649,-1.74713 4.27078,5.14434 0,0 0.58238,-0.48531 0.29119,-1.45595 -0.0971,2.32952 0,0 0.97063,0 0.29119,1.16475 0.87357,1.65008 0,0 4.56197,-5.5326 3.78546,1.26182 0.87357,-1.94126 6.21204,-3.30015 -2.62071,-5.14435 0.67945,3.30015 -3.20309,2.42658 -3.59133,0.29119 -7.18267,-7.66799 -3.20309,-4.85315 3.20309,-3.39721 -3.30015,-0.19413 -1.35888,-3.20308 -0.0971,-0.19413 -5.53259,6.01791 -12.22996,4.07666 -3.97959,1.26182 0,0 z"/>
-                    <path id="MN" onClick={() => chooseState('MN')} d="m 558.54712,73.847349 1.94126,6.891482 4.07665,24.848159 1.94126,9.90044 0.58238,8.73568 2.23246,5.24141 0.48531,4.4649 0.38825,1.45595 -0.0971,0.29119 -3.88252,6.40616 2.52364,4.27078 4.85315,34.16622 0.19413,4.4649 4.85315,-0.29119 19.12144,-1.06769 47.75505,-3.97959 4.7561,-0.48532 0,-0.48531 -1.35889,-7.47386 -5.92085,-3.00896 -4.65903,-4.85315 -7.37679,-4.46491 -2.32952,-0.19412 -3.59133,-2.71777 0.97063,-13.39471 -3.39721,-3.10602 1.16476,-5.43554 6.21204,-5.62966 -1.0677,-11.64757 2.23245,-2.52364 0,0 7.57093,-7.95918 8.63861,-11.065195 3.30015,-2.329514 5.82379,-2.814831 6.11497,-4.561967 -4.07665,0.776505 -2.42658,-1.844199 -9.31806,1.261821 -1.45594,-1.747136 -8.34743,3.397209 -6.69736,-2.814831 -1.84419,-2.232452 -5.33848,0.388253 -3.59133,-1.844199 1.16476,-1.358884 -4.56197,-1.455947 -4.07665,0 -6.50323,2.814831 -1.26182,-1.941263 -10.28869,-1.455947 -3.49427,-8.73568 -0.38826,-2.620705 -4.4649,-1.26182 0.38825,7.47386 -11.8417,0.873568 -14.65653,0.582379 -0.97063,0.09706 z"/>
+                    <path id="MA" onClick={() => chooseState('MA')} d="m 956.31178,153.05085 -0.29118,-0.19412 0,0.29119 0.29118,-0.0971 z m -2.91189,-2.6207 0.67944,-0.29119 0,-0.38825 -0.67944,0.67944 z m 12.03583,-7.57092 -0.0971,-1.35889 -0.19412,-0.7765 0.29119,2.13539 z m -42.41659,-9.9975 -0.67944,0.29119 -5.5326,1.65007 -1.94126,0.67944 -2.23245,0.67944 -0.7765,0.29119 0,0.29119 0.29118,5.04728 0.29119,4.65903 0.29119,4.27078 0.48532,0.29119 1.74714,-0.48532 7.86211,-2.32951 0.19412,0.48531 13.97709,-5.33847 0.0971,0.19413 1.26182,-0.48532 4.4649,-1.74713 4.27078,5.14434 0,0 0.58238,-0.48531 0.29119,-1.45595 -0.0971,2.32952 0,0 0.97063,0 0.29119,1.16475 0.87357,1.65008 0,0 4.56197,-5.5326 3.78546,1.26182 0.87357,-1.94126 6.21204,-3.30015 -2.62071,-5.14435 0.67945,3.30015 -3.20309,2.42658 -3.59133,0.29119 -7.18267,-7.66799 -3.20309,-4.85315 3.20309,-3.39721 -3.30015,-0.19413 -1.35888,-3.20308 -0.0971,-0.19413 -5.53259,6.01791 -12.22996,4.07666 -3.97959,1.26182 0,0 z" />
+                    <path id="MN" onClick={() => chooseState('MN')} d="m 558.54712,73.847349 1.94126,6.891482 4.07665,24.848159 1.94126,9.90044 0.58238,8.73568 2.23246,5.24141 0.48531,4.4649 0.38825,1.45595 -0.0971,0.29119 -3.88252,6.40616 2.52364,4.27078 4.85315,34.16622 0.19413,4.4649 4.85315,-0.29119 19.12144,-1.06769 47.75505,-3.97959 4.7561,-0.48532 0,-0.48531 -1.35889,-7.47386 -5.92085,-3.00896 -4.65903,-4.85315 -7.37679,-4.46491 -2.32952,-0.19412 -3.59133,-2.71777 0.97063,-13.39471 -3.39721,-3.10602 1.16476,-5.43554 6.21204,-5.62966 -1.0677,-11.64757 2.23245,-2.52364 0,0 7.57093,-7.95918 8.63861,-11.065195 3.30015,-2.329514 5.82379,-2.814831 6.11497,-4.561967 -4.07665,0.776505 -2.42658,-1.844199 -9.31806,1.261821 -1.45594,-1.747136 -8.34743,3.397209 -6.69736,-2.814831 -1.84419,-2.232452 -5.33848,0.388253 -3.59133,-1.844199 1.16476,-1.358884 -4.56197,-1.455947 -4.07665,0 -6.50323,2.814831 -1.26182,-1.941263 -10.28869,-1.455947 -3.49427,-8.73568 -0.38826,-2.620705 -4.4649,-1.26182 0.38825,7.47386 -11.8417,0.873568 -14.65653,0.582379 -0.97063,0.09706 z" />
                     <path id="MT" onClick={() => chooseState('MT')} d="m 465.65771,72.973781 -32.12789,-2.135389 -23.39221,-2.232451 -23.29515,-2.717768 -14.46241,-1.941262 -23.10102,-3.591336 -11.55051,-1.941262 -25.81879,-4.950219 -2.71777,-0.582379 -4.17371,19.800877 1.8442,3.591335 1.45595,5.532598 -0.87357,0.776505 1.8442,5.047282 2.52364,2.135389 7.18267,12.035829 0.67944,2.03832 2.91189,-0.19412 -3.39721,15.91835 -1.35888,0.38825 -1.8442,5.33847 9.60925,0.67944 0.77651,4.46491 5.43553,13.29765 0.97063,0.7765 3.78546,7.76505 0.97063,-0.7765 8.05624,-0.0971 10.19163,1.0677 2.52364,-3.30015 3.00896,5.43553 0.58238,0.29119 0.0971,-0.58237 1.35888,-9.51219 33.19559,4.07665 26.49823,2.52364 13.97709,1.16476 24.94522,1.45595 1.26182,0.0971 0.29119,0 0.0971,-1.35888 0.29119,-6.69736 0.38825,-8.83274 0.0971,-2.23246 0.19413,-3.88252 1.55301,-30.47782 1.26182,-23.683401 0.0971,-3.882525 -1.8442,-0.09706 z" />
                     <path id="ND" onClick={() => chooseState('ND')} d="m 556.50879,73.847349 -29.31306,0.582379 -20.48032,-0.09706 -17.56842,-0.388253 -20.57738,-0.776505 -1.0677,-0.09706 -0.0971,3.882525 -1.26182,23.683405 -1.55301,30.47782 -0.19413,3.88252 3.78546,0.19413 42.80484,1.16476 39.50469,-0.29119 16.40367,-0.48532 3.30014,-0.19412 -0.38825,-1.45595 -0.48531,-4.4649 -2.23246,-5.24141 -0.58238,-8.73568 -1.94126,-9.90044 -4.07665,-24.848163 -1.94126,-6.891482 -2.03833,0 z" />
                     <path id="ID" onClick={() => chooseState('ID')} d="m 309.0949,52.881715 -8.63862,-1.747136 -2.81483,-0.679442 -1.26182,-0.291189 -11.25932,50.666952 0.48532,4.17371 -0.38826,4.36784 0.19413,0.97063 0,0.0971 0.0971,1.84419 3.30015,3.59134 -4.75609,11.93876 -10.09457,13.20059 -0.29119,2.42658 2.62071,6.21204 -9.221,38.24287 -0.38825,2.03832 2.71776,0.58238 27.46887,5.43553 10.96813,2.03833 2.81483,0.48532 2.71777,0.48531 13.97709,2.23245 25.04228,3.78546 2.81483,0.38826 0.38825,-3.20309 0.87357,-6.3091 3.30015,-25.23641 1.74714,-12.52114 0.38825,-3.20309 -0.58238,-0.29119 -3.00896,-5.43553 -2.52364,3.30015 -10.19163,-1.0677 -8.05624,0.0971 -0.97063,0.7765 -3.78546,-7.76505 -0.97063,-0.7765 -5.43553,-13.29765 -0.77651,-4.46491 -9.60925,-0.67944 1.8442,-5.33847 1.35888,-0.38825 3.39721,-15.91835 -2.91189,0.19412 -0.67944,-2.03832 -7.18267,-12.035829 -2.52364,-2.135389 -1.8442,-5.047282 0.87357,-0.776505 -1.45595,-5.532598 -1.8442,-3.591335 4.17371,-19.800877 -0.0971,0 z" />
@@ -155,77 +158,22 @@ export default function HeatmapChapter() {
                     <path id="ME" onClick={() => chooseState('ME')} d="m 946.7996,118.39932 -0.0971,0 0.19412,0.0971 -0.0971,-0.0971 z m 7.18267,-20.674443 -0.77651,-1.164758 0,0.582379 0.77651,0.582379 z m -1.35888,-1.067695 0,-0.970631 -0.0971,-0.582379 0.0971,1.55301 z m 3.49427,-4.076651 -0.19413,-0.09706 0.0971,0.291189 0.0971,-0.194126 z m 9.70631,-4.853156 -0.19413,-1.455947 -0.38825,0.679442 0.58238,0.776505 z m -2.42658,0.582379 0.0971,-1.067694 -1.16476,0.194126 1.06769,0.873568 z m 3.59134,-3.203083 -0.38825,0 0,0.194126 0.38825,-0.194126 z m -4.85316,1.455947 -0.87357,-0.194126 -0.0971,0.873568 0.97063,-0.679442 z m 4.95022,-3.008957 0.87357,0.679442 -0.29119,-0.776505 -0.58238,0.09706 z m -2.6207,0.09706 -0.87357,1.650073 1.16476,-0.582379 -0.29119,-1.067694 z m -4.17372,0.09706 -0.38825,0.582379 0.29119,0.873568 0.0971,-1.455947 z m 5.72673,-3.203083 -0.0971,-0.776505 -0.29119,0.485316 0.38826,0.291189 z m -0.48532,0.388253 -0.87357,-0.776505 0,0.679442 0.87357,0.09706 z m -5.43553,2.232452 -0.19413,-1.067695 -0.38825,0.873568 0.58238,0.194127 z m 9.22099,-3.39721 -1.45594,2.135389 -0.0971,-1.55301 1.55301,-0.582379 z m 7.08561,-6.503229 -0.67944,-0.970631 -0.38825,0.194126 1.06769,0.776505 z m 2.6207,-4.36784 -0.58237,-0.291189 -0.0971,0.291189 0.67944,0 z m 1.26183,-7.570923 -0.87357,0 0.97063,0.291189 -0.0971,-0.291189 z m 1.45594,0.970631 -0.29119,-1.747136 -0.7765,-0.09706 1.06769,1.8442 z m -1.55301,-1.55301 -0.19412,-1.844199 -0.67945,1.26182 0.87357,0.582379 z m -56.29661,15.23891 14.07415,33.001458 0.19413,0.67944 6.11498,7.47386 0,-0.0971 0.97063,-0.29119 0.19413,-5.5326 1.55301,-1.94126 0.97063,-5.14435 -0.87357,-0.87357 1.65007,-5.047274 5.62966,-2.620704 3.6884,-4.464904 1.35888,-7.765049 5.92085,-0.388253 -0.7765,-3.979588 7.3768,-2.81483 0.48531,-4.36784 1.74714,0.388252 4.85315,-3.979588 2.13539,-5.144345 -4.95022,-4.950219 -5.2414,-1.067695 -1.94127,-3.979588 0,-2.329515 -3.20308,0.970632 -3.59134,-1.261821 0,-3.979588 -9.70631,-20.965634 -7.0856,-3.688398 -7.86212,6.600292 -2.13539,-0.388253 -1.8442,-3.397209 -2.52364,0.970631 -3.59133,17.859614 1.26182,5.823788 1.06769,11.8417 -2.81483,9.123934 1.94126,1.455946 -2.32951,4.464904 -2.52364,-0.388253 -0.19413,0.194127 z" />
                     <path id="MI" onClick={() => chooseState('MI')} d="m 719.96309,138.2002 -0.48532,-0.77651 -0.0971,0.97063 0.58238,-0.19412 z m 1.55301,-1.74714 -1.16476,-1.55301 -0.19413,0.67944 1.35889,0.87357 z m 0.97063,-6.98854 -0.97063,-0.87357 0,0.19412 0.97063,0.67945 z m -2.42658,76.00042 12.03583,-1.94126 3.39721,-0.67944 14.85065,-2.62071 0.29119,1.26182 0.97063,-0.29119 6.40617,-1.35888 6.11498,-1.45595 6.21204,-1.55301 -0.0971,-0.29119 3.20309,-6.3091 -0.29119,-5.24141 3.59133,-9.02687 2.81483,1.65007 1.0677,-2.03832 -0.29119,-7.76505 -2.62071,-4.85316 -3.88252,-10.28869 -3.39721,-3.78546 -1.74714,-0.48531 -6.3091,4.36784 0.67944,0.87356 -3.30014,6.21204 -3.20309,-0.58238 -0.97063,-6.50322 1.35889,-0.48532 2.81483,-6.50323 0.29119,-11.45345 -4.36784,-9.70631 -9.70632,-1.65007 -0.97063,-1.45595 -9.02687,-2.6207 -4.07665,5.04728 0.38825,4.36784 -3.10602,3.88252 0.67945,6.01792 -3.00896,2.13539 0,-7.57093 -2.71777,5.72673 -3.20308,5.04728 -2.13539,1.65007 1.06769,5.33847 -1.35888,5.5326 0.77651,6.89148 -0.97064,3.39721 6.98855,13.39471 0.87357,5.14435 -0.87357,9.51218 -4.65903,10.67695 -0.58238,0.38825 z m 20.77151,-87.45387 -2.52364,0.19412 1.55301,1.16476 0.97063,-1.35888 z m -14.7536,2.52364 -0.7765,0 0.87357,0.38825 -0.0971,-0.38825 z m 16.98605,-12.32702 -0.97063,-1.55301 -0.38825,0.0971 1.35888,1.45594 z m -87.93919,7.08561 3.10602,1.74714 15.91835,4.85315 7.3768,1.94127 7.18267,0.48531 5.24141,4.27078 0,6.60029 4.65903,4.65903 0,-0.0971 3.78546,-10.96814 4.56197,-3.20308 3.49427,-3.88252 0.58238,3.49427 3.59134,-5.5326 8.63861,-3.30014 0.67945,-1.35889 8.73568,1.0677 3.39721,1.74713 1.65007,-4.27077 1.55301,0.97063 6.79442,-1.0677 -1.65008,-2.71777 -3.00895,-1.74713 0.58238,-6.3091 -5.92085,3.30014 -5.43554,-0.67944 -1.74714,-4.17371 0.58238,-1.358888 -7.37679,3.494268 -4.7561,0.29119 -8.54155,5.24141 -0.97063,1.94126 -5.24141,-1.26182 -3.30015,1.45595 -6.60029,-5.72672 -14.65653,-4.46491 -0.29119,-1.747133 -9.41512,9.026873 -5.33847,1.35888 -7.57093,5.72673 -0.29119,0.19412 z m 34.36035,-22.033327 -11.35639,5.629661 3.78546,3.688396 1.45595,-3.688396 3.88253,-4.756093 2.23245,-0.873568 z M 676.77,79.962326 l -7.76505,5.338471 -0.38825,2.620704 6.11497,-4.464903 2.03833,-3.494272 z" />
                 </svg>
-                <p className='text-14' style={{textAlign: 'center'}}>Click on a state on the map to refresh the data</p>
+                <p className='text-14' style={{ textAlign: 'center' }}>Click on a state on the map to refresh the data</p>
             </Grid>
             <Grid item xs={12} md={6} textAlign='center' sx={{ padding: '0 40px' }}>
-                {/* 1 row */}
                 <Grid container direction="row" sx={{ justifyContent: "space-between", alignItems: "flex-start" }} >
                     <span className='text-16' style={{ fontWeight: 800 }}>{currentTodayHeatmapState.state}</span>
                     <span className='text-16' style={{ fontWeight: 800 }}>Equipment: Van</span>
                 </Grid>
                 <hr />
-                {/* 2 row */}
-                <Grid container direction="row" justifyContent="space-between" alignItems="center" sx={{ margin: "10px 0" }} >
-                    <div style={{display: 'flex', alignItems: 'baseline'}}>
-                        <span className='text-14' style={{fontWeight: "bold"}}>
-                            {new Date().toLocaleDateString("en-US", {month: "short", day: "numeric"})}
-                        </span>
-                        <div style={{ width: '15px', height: '15px', marginLeft: 10, backgroundColor: colorOfTodayHeatmapState, color: "white" }}></div>
-                    </div>
-                    <div style={{display: 'flex', alignItems: 'baseline'}}>
-                        <span className='text-14' style={{fontWeight: "bold"}}>
-                            {(new Date(new Date().getTime() + 86400000)).toLocaleDateString("en-US", {month: "short", day: "numeric"})}
-                        </span>
-                        <div style={{ width: '15px', height: '15px', marginLeft: 10, backgroundColor: colorOfTomorrowHeatmapState, color: "white" }}></div>
-                    </div>
-                </Grid>
-                {/* 3 row */}
-                <div style={{textAlign: "center", margin: "15px 0"}}>
-                    <span className='text-14' style={{ fontWeight: "bold"  }}>Pickups</span>
-                </div>
-                {/* 4 row */}
-                <Grid container direction="row" justifyContent="space-between" alignItems="center" sx={{ margin: "10px 0" }} >
-                    <span className='text-14' style={{ fontWeight: "bold"  }}>
-                        {`$${currentTodayHeatmapState.averagePickupRate}/mi`}
-                    </span>
-                    <span className='text-14' style={{ fontWeight: "bold"  }}>
-                        {`$${currentTomorrowHeatmapState.averagePickupRate}/mi`}
-                    </span>
-                </Grid>
-                {/* 5 row */}
-                <Grid container direction="row" justifyContent="space-between" alignItems="center" sx={{ margin: "10px 0" }} >
-                    <span className='text-14' style={{ fontWeight: "bold"  }}>
-                        {currentTodayHeatmapState.pickupsAmount} load(s)
-                    </span>
-                    <span className='text-14' style={{ fontWeight: "bold"  }}>
-                        {currentTomorrowHeatmapState.pickupsAmount} load(s)
-                    </span>
-                </Grid>
+                <HeatmapStateRow text1={colorOfTodayHeatmapState} text2={colorOfTomorrowHeatmapState} />
+                <HeatmapCardTitle title='Pickups' />
+                <HeatmapCardRow text1={`$${currentTodayHeatmapState.averagePickupRate}/mi`} text2={`$${currentTomorrowHeatmapState.averagePickupRate}/mi`} />
+                <HeatmapCardRow text1={`$${currentTodayHeatmapState.pickupsAmount} load(s)`} text2={`$${currentTomorrowHeatmapState.pickupsAmount} load(s)`} />
                 <hr />
-                {/* 6 row */}
-                <div style={{textAlign: "center", margin: "15px 0"}}>
-                    <span className='text-14' style={{ fontWeight: "bold"  }}>
-                        Deliveries
-                    </span>
-                </div>
-                {/* 7 row */}
-                <Grid container direction="row" justifyContent="space-between" alignItems="center" sx={{ margin: "10px 0" }} >
-                    <span className='text-14' style={{ fontWeight: "bold"  }}>
-                        {`$${currentTodayHeatmapState.averageDeliveryRate}/mi`}
-                    </span>
-                    <span className='text-14' style={{ fontWeight: "bold"  }}>
-                        {`$${currentTomorrowHeatmapState.averageDeliveryRate}/mi`}
-                    </span>
-                </Grid>
-                {/* 8 row */}
-                <Grid container direction="row" justifyContent="space-between" alignItems="center" sx={{ margin: "10px 0" }} >
-                    <span className='text-14' style={{ fontWeight: "bold"  }}>
-                        {currentTodayHeatmapState.deliveriesAmount} load(s)
-                    </span>
-                    <span className='text-14' style={{ fontWeight: "bold"  }}>
-                        {currentTomorrowHeatmapState.deliveriesAmount} load(s)
-                    </span>
-                </Grid>
+                <HeatmapCardTitle title='Deliveries' />
+                <HeatmapCardRow text1={`$${currentTodayHeatmapState.averageDeliveryRate}/mi`} text2={`$${currentTomorrowHeatmapState.averageDeliveryRate}/mi`} />
+                <HeatmapCardRow text1={`$${currentTodayHeatmapState.deliveriesAmount} load(s)`} text2={`$${currentTomorrowHeatmapState.deliveriesAmount} load(s)`} />
                 <hr />
             </Grid>
         </Grid>

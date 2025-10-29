@@ -40,10 +40,11 @@ export default function InvoiceTabPage({ onCreate }: BillingTabPageProps) {
     };
 
     useEffect(() => {
+        if (invoiceSearchParams.itemList.length > 0) return
         getInvoices(invoiceSearchParams)
         if (pricepackageSearchParams.itemList.length === 0) searchPricepackages(pricepackageSearchParams)
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [invoiceSearchParams.searchCriteria, invoiceSearchParams.sortField, invoiceSearchParams.order])
+    }, [])
 
     const onOpenMenu = (event: React.MouseEvent<HTMLElement>) => setAnchorEl(event.currentTarget)
 
@@ -76,7 +77,7 @@ export default function InvoiceTabPage({ onCreate }: BillingTabPageProps) {
                         endIcon={<KeyboardArrowDownIcon />}
                         sx={{ textTransform: 'none', borderRadius: "16px" }}
                     >
-                        <span className="text-16" style={{color: "var(--lightgreywhite)"}}>+ Order</span>
+                        <span className="text-16" style={{ color: "var(--lightgreywhite)" }}>+ Order</span>
                     </Button>
                     <Menu
                         sx={{ mt: '45px' }} id="menu-appbar" anchorEl={anchorEl}

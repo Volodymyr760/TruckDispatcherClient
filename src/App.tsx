@@ -22,7 +22,7 @@ export default function App() {
     const [theme, setTheme] = useState<string>(getThemeMode)
     const { login } = useActions()
 
-    const fetchAuthModel = async function name(id: string) {
+    const fetchAuthModel = async (id: string) => {
         const authModel = await getAuthModelAxios(id)
         login(authModel)
         AxiosMiddleWareBoot(authModel.tokens.accessToken, authModel.tokens.refreshToken, authModel.user.email)

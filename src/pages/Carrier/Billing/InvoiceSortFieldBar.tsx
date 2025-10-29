@@ -10,18 +10,25 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
 
 export default function InvoiceSortFieldBar({ fields }: SortFieldBarProps) {
     const { invoiceSearchParams } = useTypedSelector(state => state.invoice)
-    const { setInvoiceSortfield, setInvoiceSort } = useActions()
+    const { getInvoices, setInvoicePage, setInvoiceSortfield, setInvoiceSort } = useActions()
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null)
 
     const handleOpen = (event: React.MouseEvent<HTMLElement>) => setAnchorElUser(event.currentTarget)
     const handleClose = () => setAnchorElUser(null)
 
     const onSelectHandler = (field: string) => {
-        if (field === invoiceSearchParams.sortField) {
-            invoiceSearchParams.order === OrderType.Ascending ? setInvoiceSort(OrderType.Descending) : setInvoiceSort(OrderType.Ascending)
-        } else {
-            setInvoiceSortfield(field)
-        }
+        let invoiceSortOrder: OrderType = OrderType.Ascending
+        if (field === invoiceSearchParams.sortField)
+            invoiceSortOrder = invoiceSearchParams.order === OrderType.Ascending ? OrderType.Descending : OrderType.Ascending
+        setInvoicePage(1)
+        setInvoiceSortfield(field)
+        setInvoiceSort(invoiceSortOrder)
+        getInvoices({
+            ...invoiceSearchParams,
+            currentPage: 1,
+            sortField: field,
+            order: invoiceSortOrder
+        })
     }
 
     return (
@@ -31,30 +38,30 @@ export default function InvoiceSortFieldBar({ fields }: SortFieldBarProps) {
                     <SortOutlinedIcon sx={{ cursor: 'pointer', margin: '0 5px', fill: 'var(--lightGrey)' }} />
                 </IconButton>
             </Tooltip>
-            <Menu sx={{ mt: '45px' }}id="menu-sortfield-bar" anchorEl={anchorElUser} keepMounted
-                anchorOrigin={{vertical: 'top', horizontal: 'left'}}
-                transformOrigin={{ vertical: 'top', horizontal: 'left'}}
+            <Menu sx={{ mt: '45px' }} id="menu-sortfield-bar" anchorEl={anchorElUser} keepMounted
+                anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+                transformOrigin={{ vertical: 'top', horizontal: 'left' }}
                 open={Boolean(anchorElUser)}
                 onClose={handleClose}
             >
                 {
                     fields.map(field =>
-                        <MenuItem key={field} 
-                            sx={{fontSize: "16px", fontFamily: "Mulish", padding: "2px 10px"}}
+                        <MenuItem key={field}
+                            sx={{ fontSize: "16px", fontFamily: "Mulish", padding: "2px 10px" }}
                             onClick={() => {
                                 onSelectHandler(field)
                                 handleClose();
                             }}>
-                                {field}
-                                &nbsp;
-                                {
-                                    field === invoiceSearchParams.sortField ?
+                            {field}
+                            &nbsp;
+                            {
+                                field === invoiceSearchParams.sortField ?
                                     invoiceSearchParams.order === OrderType.Ascending ?
-                                            <ArrowUpwardIcon sx={{ cursor: 'pointer', margin: '0 5px', fill: 'var(--orange)' }} />
-                                            :
-                                            <ArrowDownwardIcon sx={{ cursor: 'pointer', margin: '0 5px', fill: 'var(--orange)' }} />
-                                        : null
-                                }
+                                        <ArrowUpwardIcon sx={{ cursor: 'pointer', margin: '0 5px', fill: 'var(--orange)' }} />
+                                        :
+                                        <ArrowDownwardIcon sx={{ cursor: 'pointer', margin: '0 5px', fill: 'var(--orange)' }} />
+                                    : null
+                            }
                         </MenuItem>
                     )
                 }

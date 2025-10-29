@@ -5,3 +5,20 @@
     stroke: #333;
     stroke-width: 2;
 }
+
+.heatmap-title {
+    text-align: center;
+    margin: 15px 0;
+}
+
+.heatmap-small {
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.heatmap-state {
+    width: 15px;
+    height: 15px;
+    margin-left: 10px;
+    color: white;
+}
